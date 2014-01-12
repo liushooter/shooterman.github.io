@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Life | Shooter's Blog]]></title>
+  <link href="http://shooterman.github.com/blog/categories/life/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.com/"/>
+  <updated>2014-01-12T14:57:03+08:00</updated>
+  <id>http://shooterman.github.com/</id>
+  <author>
+    <name><![CDATA[shooter]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[再见2012, 你好2013]]></title>
+    <link href="http://shooterman.github.com/blog/2013/01/01/goodbye-2012-hello-2013/"/>
+    <updated>2013-01-01T16:43:00+08:00</updated>
+    <id>http://shooterman.github.com/blog/2013/01/01/goodbye-2012-hello-2013</id>
+    <content type="html"><![CDATA[<p>当我还在2011憧憬2012的时候，它走到了末尾，迎来了2013，时间走的好快。</p>
+
+<p><del>说好的末日没有来，爱情也木来 </del></p>
+
+<p>换了新的工作，换了新的同事。</p>
+
+<p>自从11年11月份接触ruby，至今也有1年多了。感觉进步不是很快，一直是一个人摸爬滚打，
+没有真正的引路人。</p>
+
+<h2>To Do List</h2>
+
+<h3>Rails</h3>
+
+<p>Rails测试框架
+基本定性在已 RSpec+factory_girl为基础的测试框架，以后逐步添加其他gem。
+测试效率，覆盖率，自动程度，学习难度，这几个方面考虑。</p>
+
+<h3>Git</h3>
+
+<p>这么潮的版本控制工具，不用实在不是我性格。
+等比对了Git跟svn的优缺点，我就要转型了。</p>
+
+<h3>论坛</h3>
+
+<p>计划推迟了很长时间</p>
+
+<h3>提高英语水平</h3>
+
+<p>感觉我的水平就停留在了初中人教版，看这么多文档，费时费力，懂英语会走的更远。</p>
+
+<h3>Python</h3>
+
+<p>python算是ruby的兄弟语言。虽没有ruby那么灵活，但运行速度快，跨平台性好。
+GUI方面比ruby强了很多。java语法太琐碎了，概念性的东西一大堆。</p>
+
+<h3>mac mini</h3>
+
+<p>虽然在ubuntu基本可以胜任，但在GUI方面还是mac支持的不错。
+公司也不提供工作的电脑，整天扛着笔记本挤地铁，有些痛苦。
+到时候可以研究下ios，当作副业，开发个app，弄点小钱也不错。</p>
+
+<h3>ruby on arduino</h3>
+
+<p>看见别人分享的ppt，感觉很新奇，很潮。
+软件跟硬件打交道，这是最能直观体现软件价值功能的地方了。</p>
+
+<p>arduino在<a href="http://arduino.tw/">tw</a>很火。</p>
+
+<p><a href="http://zh.wikipedia.org/wiki/Arduino">中文wiki</a></p>
+
+<p><a href="http://www.arduino.cc/">arduino官网</a></p>
+
+<h3>最后  多赚钱，money才是王道啊。</h3>
+
+<p>PS: 这本想在13年1月1日发出来的，竟然拖到了 13年12月21日。</p>
+
+<p>补录:</p>
+
+<p>昨天(12-20)外祖父突然去世，我的blog也能用了，这是偶然么?
+愿您安息</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My First Blog]]></title>
+    <link href="http://shooterman.github.com/blog/2012/07/24/my-first-blog/"/>
+    <updated>2012-07-24T21:33:00+08:00</updated>
+    <id>http://shooterman.github.com/blog/2012/07/24/my-first-blog</id>
+    <content type="html"><![CDATA[<p>我的Blog开张了！</p>
+]]></content>
+  </entry>
+  
+</feed>

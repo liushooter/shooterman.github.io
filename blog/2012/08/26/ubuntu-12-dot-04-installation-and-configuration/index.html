@@ -1,0 +1,425 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ubuntu 12.04的安装和配置(一) - Shooter's Blog</title>
+  <meta name="author" content="shooter">
+
+  
+  <meta name="description" content="Ubuntu 12.04 出来有段时间了，一直没有更新，本想从11.10的系统 直接升级，结果脆生生挂掉了，好多东西拿不出来了。杯具，重装吧！ 主要是 ruby on rails 和它相关联的在 ubuntu 上的安装配置。 包括 rvm , ruby on rails, Sublime &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Shooter's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-33680426-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shooter's Blog</a></h1>
+  
+    <h2>御风而行 世而誉之而不加劝 世而非之而不加沮</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:shooterman.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ubuntu 12.04的安装和配置(一)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-26T17:26:00+08:00" pubdate data-updated="true">2012-8-26</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://shooterman.github.com">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p> <a href="http://www.ubuntu.com/">Ubuntu 12.04</a> 出来有段时间了，一直没有更新，本想从11.10的系统
+ 直接升级，结果脆生生挂掉了，好多东西拿不出来了。杯具，重装吧！</p>
+
+<p> 主要是 ruby on rails 和它相关联的在 ubuntu 上的安装配置。
+ 包括 <a href="https://rvm.io/">rvm</a> , ruby on rails, Sublime Text,
+ <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
+ <a href="http://www.mongodb.org/">mogoDB</a>, <a href="http://redis.io/">redis</a> 的安装，
+ 顺便把 <a href="http://nodejs.org/">Node.js</a> 也装上，当作汇总了。</p>
+
+<h2>安装Ubuntu 12-04</h2>
+
+<p>首先准备好12.04的 iso 镜像，需要先从官网下载，我是把iso文件写入U盘后安装的。
+从10.10以后，用 UltraISO 制作出来的 Ubuntu 启动盘会出现无法启动的现象，有人说 ImageWriter 很靠谱，
+先用了<a href="https://github.com/downloads/openSUSE/kiwi/ImageWriter.exe">ImageWriter</a>，
+不过我的本本提示没有写入权限，所以找到了<a href="https://launchpad.net/win32-image-writer/">另一个版本</a>，
+ 顺利写入。然后插上U盘，重启，设置从U盘启动，基本一路 next，结果手欠，装成E文的系统了。</p>
+
+<h3>安装配置</h3>
+
+<h4><strong>中文输入</strong></h4>
+
+<p>12.04 的中文输入是个大问题， 即使能输入中文，在低版本的 Sublime Text 中也不能输入中文，
+好在 <strong>dev版本在其他输入法下</strong> 已经ok了。</p>
+
+<h4><strong>安装 Ruby On Rails</strong></h4>
+
+<p>先安装一些 ruby on rails 的依赖包，听前辈们的话不会错。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo apt-get install -y build-essential openssl curl libcurl3-dev libreadline6 libreadline6-dev git zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf automake libtool imagemagick libmagickwand-dev libpcre3-dev libsqlite3-dev</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>No.1 安装 RVM</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> $ curl -L get.rvm.io | bash -s stable </span></code></pre></td></tr></table></div></figure>
+
+
+<p> 给 ~/.bashrc (Ubuntu) 加上脚本引用</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  $ echo '[[ -s " HOME/.rvm/scripts/rvm" ]] && source " HOME/.rvm/scripts/rvm"' &gt;&gt; ~/.bashrc</span></code></pre></td></tr></table></div></figure>
+
+
+<p> 然后，重新载入那个文件</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> $ source ~/.bashrc </span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试一下</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ rvm -v
+</span><span class='line'>rvm 1.15.5 (stable) by Wayne E. Seguin &lt;wayneeseguin@gmail.com&gt;, Michal Papis &lt;mpapis@gmail.com&gt; [https://rvm.io/]</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>No.2  用 RVM 安装 Ruby 环境</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ rvm list known #显示可供选择的版本
+</span><span class='line'>
+</span><span class='line'>[ruby-]1.8.6[-p420]
+</span><span class='line'>[ruby-]1.8.7[-p370]
+</span><span class='line'>[ruby-]1.9.1[-p431]
+</span><span class='line'>[ruby-]1.9.2-p180
+</span><span class='line'>[ruby-]1.9.2-p290
+</span><span class='line'>[ruby-]1.9.2-p318
+</span><span class='line'>[ruby-]1.9.2[-p320]
+</span><span class='line'>[ruby-]1.9.2-head
+</span><span class='line'>[ruby-]1.9.3-preview1
+</span><span class='line'>[ruby-]1.9.3-rc1
+</span><span class='line'>[ruby-]1.9.3-p0
+</span><span class='line'>[ruby-]1.9.3-p125
+</span><span class='line'>[ruby-]1.9.3[-p194]
+</span><span class='line'>[ruby-]1.9.3-head
+</span><span class='line'>ruby-head
+</span><span class='line'>......
+</span><span class='line'>
+</span><span class='line'># 要安装1.9.3，直接
+</span><span class='line'>$ rvm install 1.9.3  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>&#8230;&#8230;&#8230;&#8230;&#8230;&#8230; 漫长的的等待 &#8230;&#8230;&#8230;&#8230;&#8230;&#8230;</p>
+
+<p>Ruby 装好以后，通过 RVM 将指定版本的 Ruby 设置为系统默认版本</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ rvm  1.9.3 --default </span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试一下</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ ruby -v
+</span><span class='line'>ruby 1.9.3p194 (2012-04-20 revision 35410) [i686-linux]
+</span><span class='line'>$ gem -v
+</span><span class='line'>1.8.23</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>No.3 安装 Rails 环境</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem install bundler rails</span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试一下</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ bundle -v
+</span><span class='line'>Bundler version 1.1.5
+</span><span class='line'>$ rails -v
+</span><span class='line'>Rails 3.2.8</span></code></pre></td></tr></table></div></figure>
+
+
+<p> ruby on rails 的安装齐活了。</p>
+
+<h4><strong>安装 Sublime Text</strong></h4>
+
+<p>由于<strong>输入汉字</strong>原因，安装 Sublime Text 的dev版本，就是比较新的。
+先 google 一下 Sublime Text 的ppa源，好吧，ppa暂且是什么先不管。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo add-apt-repository ppa:webupd8team/sublime-text-2
+</span><span class='line'>$ sudo apt-get update # 更新软件源
+</span><span class='line'>$ sudo apt-get install sublime-text-dev</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">shooter</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-26T17:26:00+08:00" pubdate data-updated="true">2012-8-26</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ruby/'>ruby</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/08/08/my-sublime-text-2-plugin-summary/" title="Previous Post: 我用到的 Sublime Text 2 插件">&laquo; 我用到的 Sublime Text 2 插件</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/" title="Next Post: Ubuntu 12.04的安装和配置(二)">Ubuntu 12.04的安装和配置(二) &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/goodbye-2012-hello-2013/">再见2012, 你好2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/15/the-ruby-syntax-yield-and-closure/">Ruby的yield和闭包</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/05/interview-questions-about-the-ror/">RoR的一些面试经验(一)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/31/across-the-great-wall/">翻越GFW 走向世界</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shooterman">@shooterman</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shooterman',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - shooter -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'blackbean';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/';
+        var disqus_url = 'http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

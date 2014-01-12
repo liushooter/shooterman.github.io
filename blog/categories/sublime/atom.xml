@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Sublime | Shooter's Blog]]></title>
+  <link href="http://shooterman.github.com/blog/categories/sublime/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.com/"/>
+  <updated>2014-01-12T14:57:03+08:00</updated>
+  <id>http://shooterman.github.com/</id>
+  <author>
+    <name><![CDATA[shooter]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[我用到的 Sublime Text 2 插件]]></title>
+    <link href="http://shooterman.github.com/blog/2012/08/08/my-sublime-text-2-plugin-summary/"/>
+    <updated>2012-08-08T20:24:00+08:00</updated>
+    <id>http://shooterman.github.com/blog/2012/08/08/my-sublime-text-2-plugin-summary</id>
+    <content type="html"><![CDATA[<p> <a href="http://www.sublimetext.com/">Sublime Text 2</a> 是在俺剛學習<strong>Ruby</strong>時大大們極力推薦的，真的超贊。
+ Sublime Text是用<a href="http://zh.wikipedia.org/zh/Python">python语言</a>编写。如果熟悉<a href="http://www.python.org/">python</a>，你也可以编写插件實現自己想要的功能。目前插件集中在github上，需要在线安装。安装插件前需要 <strong>安装包控制(Package Control)</strong></p>
+
+<h3>安装包控制(Package Control)</h3>
+
+<ul>
+<li>打开Sublime Text 2，按下  <code>Ctrl+`</code> 调出 Console。</li>
+<li>将以下代码粘贴进命令行中并回车:
+<code>  
+import urllib2,os;pf='Package Control.sublime-package';ipp=sublime.installed_packages_path();os.makedirs(ipp) if not os.path.exists(ipp) else None;open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read())
+</code></li>
+<li>重启 Sublime Text 2，如果在 <code>Preferences -&gt; Package Settings</code>中见到
+ <code>Package Control</code>这一项，就说明安装成功了。</li>
+</ul>
+
+
+<h3>使用 Package Control 安装插件</h3>
+
+<ul>
+<li><p>按下<code>Ctrl+Shift+P</code>，调出窗口</p></li>
+<li><p>在输入框中输入<code>install</code>，将智能模糊提示，光标选中 <code>Package Control: Install Package</code>，果断回车</p></li>
+<li><p>在新弹出的窗口中，(假设SublimeREPL)，直接将插件名(如 SublimeREPL)复制到输入框中</p></li>
+<li><p>大功告成，有时特殊情况，需要在第二步前，先通过输入repository 添加插件的url，重复第二步，然后真正的ok。
+<strong>MarkdownEditing</strong> 是这样滴情况。</p></li>
+</ul>
+
+
+<h3>我的插件集</h3>
+
+<p>俗话就说嘛 好记性不如烂笔头 ^_^</p>
+
+<ul>
+<li><p><a href="https://github.com/condemil/Gist">Gist</a>  gist代码分享</p></li>
+<li><p><a href="https://github.com/wuub/SublimeREPL">SublimeREPL</a>
+将 Ruby Shell (即 IRB)整合到 Sublime Text 中,而且集成了 node coffeescript lua 等，不过需要配置好环境，
+偶的只有irb，其他都是提示错误。</p></li>
+<li><p><a href="http://ttscoff.github.com/MarkdownEditing/">MarkdownEditing</a>   markdown编辑插件</p></li>
+<li><p><a href="https://github.com/revolunet/sublimetext-markdown-preview">Markdown Preview</a> markdown预览插件</p></li>
+</ul>
+
+
+<p>感觉每个插件都大有搞头的样子 ，以后再说吧。</p>
+
+<p>PS: 第一次写东西，刚刚上手<a href="http://markdown.tw/">markdown</a>，参考了网上n多资料，还要亲手尝试一遍，恨费工夫和精力，好在没有神马意外情况。</p>
+]]></content>
+  </entry>
+  
+</feed>
