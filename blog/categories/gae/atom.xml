@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: GAE | Shooter's Blog]]></title>
-  <link href="http://shooterman.github.com/blog/categories/gae/atom.xml" rel="self"/>
-  <link href="http://shooterman.github.com/"/>
-  <updated>2014-01-12T14:57:03+08:00</updated>
-  <id>http://shooterman.github.com/</id>
+  <link href="http://shooterman.github.io/blog/categories/gae/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[翻越GFW 走向世界]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/31/across-the-great-wall/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/31/across-the-great-wall/"/>
     <updated>2012-08-31T05:02:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/31/across-the-great-wall</id>
+    <id>http://shooterman.github.io/blog/2012/08/31/across-the-great-wall</id>
     <content type="html"><![CDATA[<p>"Across the Great Wall we can reach every corner in the world."</p>
 
 <p>中国不愧为文明古国，早有先见之明，古有长城，今有×××，人们乐此不疲的到墙外透透气儿。

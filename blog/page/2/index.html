@@ -9,12 +9,8 @@
   <meta name="author" content="shooter">
 
   
-  <meta name="description" content="上一篇坑挖了一半，今天一定要把坑挖好。 继续 passenger, nginx, mongodb, redis, Node.js 的安装。 安装Node.js 配置好ruby on rails 环境后，创建一个rails 项目 1
-2
-3
-4
-$ rails new demo ……
-$ cd &hellip;">
+  <meta name="description" content="&#8220;Across the Great Wall we can reach every corner in the world.&#8221; 中国不愧为文明古国，早有先见之明，古有长城，今有×××，人们乐此不疲的到墙外透透气儿。
+不知何时翻墙也晋升为程序猿的基本功——仅是个人观点。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,7 +19,7 @@ $ cd &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shooterman.github.com/blog/page/2">
+  <link rel="canonical" href="http://shooterman.github.io/blog/page/2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Shooter's Blog" type="application/atom+xml">
@@ -67,7 +63,7 @@ $ cd &hellip;">
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:shooterman.github.com" />
+    <input type="hidden" name="q" value="site:shooterman.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -82,6 +78,136 @@ $ cd &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/08/31/across-the-great-wall/">翻越GFW 走向世界</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-31T05:02:00+08:00" pubdate data-updated="true">2012-8-31</time>
+        
+           | <a href="/blog/2012/08/31/across-the-great-wall/#disqus_thread"
+             data-disqus-identifier="http://shooterman.github.io/blog/2012/08/31/across-the-great-wall/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>&#8220;Across the Great Wall we can reach every corner in the world.&#8221;</p>
+
+<p>中国不愧为文明古国，早有先见之明，古有长城，今有×××，人们乐此不疲的到墙外透透气儿。
+不知何时翻墙也晋升为程序猿的基本功——仅是个人观点。</p>
+
+<p>在ubuntu用GAE翻墙，简单经济实惠。适合我这种不想买VPN又想看外面的人。
+我翻墙更多是浏览网页，基本用不到全局代理，我的标配是chrome和它的一个插件Proxy SwitchySharp。</p>
+
+<h4><strong>安装chrome</strong></h4>
+
+<p>尽管有Firefox，大爱还是chrome，先下载最新的deb安装包，然后</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo dpkg -i  google-chrome-stable_current_i386.deb
+</span><span class='line'>  # 提示没有安装所需要的依赖包
+</span><span class='line'>$ sudo apt-get -f install 
+</span><span class='line'>  # 安装依赖包
+</span><span class='line'>$ sudo dpkg -i  google-chrome-stable_current_i386.deb</span></code></pre></td></tr></table></div></figure>
+
+
+<p>让我感觉最恐怖的是，chrome 关联好账户后，那些配置和书签都在了。My privacy!</p>
+
+<h4><strong>注册Google App Engine帐号</strong></h4>
+
+<p>1.用Google账户登录<a href="http://code.google.com/appengine/">Google App Engine</a>后，
+点击Create an Application创建一个应用程序。</p>
+
+<p>2.输入手机号码，接受创建验证码，必须有此过程，否则无法注册成功。</p>
+
+<p>3.输入验证码后就进入了创建应用程序的详细设置界面。
+ 填写Application Identifier和Application Title以及勾选同意服务条款，点 Save 即完成创建。
+  <strong>在这里把Application Identifier称为app_id</strong>。</p>
+
+<h4><strong> SDK &amp;&amp;fetchserver &amp;&amp;localproxy</strong></h4>
+
+<p>1.下载 <a href="http://googleappengine.googlecode.com/files/google_appengine_1.7.1.zip">Google App Engine SDK</a>，
+这是python版的SDK，因为ubuntu自带了python，解压sdk到任意文件夹。</p>
+
+<p>2.在<a href="http://code.google.com/p/gappproxy/downloads/list">这里</a>，
+下载对应的localproxy和fetchserver的linux版本。
+<strong>解压fetchserver文件夹至Google App Engine SDK目录</strong>。</p>
+
+<p>3.打开fetchserver文件夹内的app.yaml文件，修改第一行</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>application: your_application_name</span></code></pre></td></tr></table></div></figure>
+
+
+<p>your_application_name改为刚才输入的app_id，
+再打开localproxy文件夹的proxy.conf文件，修改最后一行</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#fetch_server = http://your-fetch-server.appspot.com/fetch.py</span></code></pre></td></tr></table></div></figure>
+
+
+<p>去掉#，your-fetch-serve改为刚才输入的app_id。</p>
+
+<p> 4.上传fetchserver：进入Google App Engine SDK目录，运行命令appcfg.py update fetchserver，会要求你输入Google 账户及密码，之后关闭结束上传。</p>
+
+<p> 5.运行proxy.py。</p>
+
+<p> 进入localproxy文件夹，然后
+ <code>
+ $ python proxy.py
+</code></p>
+
+<h4><strong>安装Proxy SwitchySharp插件</strong></h4>
+
+<p>从Chrome 网上应用店安装Proxy SwitchySharp，配置 HTTP Proxy 为 127.0.0.1 ，Port 为8000。
+然后保存。被墙的时候，点击Proxy SwitchySharp，刷新页面即可。</p>
+
+<h4><strong>快捷方式</strong></h4>
+
+<p>若每次都要翻墙都要用到命令行，一定会吐血。我用到一个简单的方法，就是给文件添加链接到桌面</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#文件添加执行权限
+</span><span class='line'>$ sudo chmod +x proxy.py
+</span><span class='line'># 添加链接
+</span><span class='line'>$ ln ~/GFW/localproxy-2.0.0/proxy.py  ~/Desktop/killer</span></code></pre></td></tr></table></div></figure>
+
+
+<p>只要在桌面双击killer即可。</p>
+
+<p>今天是农历七月十五，有些想妈妈了，愿她一切都好。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -107,7 +233,7 @@ $ cd &hellip;">
 <time datetime="2012-08-27T20:12:00+08:00" pubdate data-updated="true">2012-8-27</time>
         
            | <a href="/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/#disqus_thread"
-             data-disqus-identifier="http://shooterman.github.com/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/">Comments</a>
+             data-disqus-identifier="http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/">Comments</a>
         
       </p>
     
@@ -311,7 +437,7 @@ $ cd &hellip;">
 <time datetime="2012-08-26T17:26:00+08:00" pubdate data-updated="true">2012-8-26</time>
         
            | <a href="/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/#disqus_thread"
-             data-disqus-identifier="http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/">Comments</a>
+             data-disqus-identifier="http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/">Comments</a>
         
       </p>
     
@@ -324,7 +450,7 @@ $ cd &hellip;">
 <p> 主要是 ruby on rails 和它相关联的在 ubuntu 上的安装配置。
  包括 <a href="https://rvm.io/">rvm</a> , ruby on rails, Sublime Text,
  <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
- <a href="http://www.mongodb.org/">mogoDB</a>, <a href="http://redis.io/">redis</a> 的安装，
+ <a href="http://www.mongodb.org/">mongodb</a>, <a href="http://redis.io/">redis</a> 的安装，
  顺便把 <a href="http://nodejs.org/">Node.js</a> 也装上，当作汇总了。</p>
 
 <h2>安装Ubuntu 12-04</h2>
@@ -505,7 +631,7 @@ $ cd &hellip;">
 <time datetime="2012-08-08T20:24:00+08:00" pubdate data-updated="true">2012-8-8</time>
         
            | <a href="/blog/2012/08/08/my-sublime-text-2-plugin-summary/#disqus_thread"
-             data-disqus-identifier="http://shooterman.github.com/blog/2012/08/08/my-sublime-text-2-plugin-summary/">Comments</a>
+             data-disqus-identifier="http://shooterman.github.io/blog/2012/08/08/my-sublime-text-2-plugin-summary/">Comments</a>
         
       </p>
     
@@ -592,7 +718,7 @@ $ cd &hellip;">
 <time datetime="2012-07-24T21:33:00+08:00" pubdate data-updated="true">2012-7-24</time>
         
            | <a href="/blog/2012/07/24/my-first-blog/#disqus_thread"
-             data-disqus-identifier="http://shooterman.github.com/blog/2012/07/24/my-first-blog/">Comments</a>
+             data-disqus-identifier="http://shooterman.github.io/blog/2012/07/24/my-first-blog/">Comments</a>
         
       </p>
     
@@ -622,6 +748,10 @@ $ cd &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/12/2013-summary/">2013年年终总结</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a>
       </li>
     
@@ -635,10 +765,6 @@ $ cd &hellip;">
     
       <li class="post">
         <a href="/blog/2012/09/05/interview-questions-about-the-ror/">RoR的一些面试经验(一)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/08/31/across-the-great-wall/">翻越GFW 走向世界</a>
       </li>
     
   </ul>

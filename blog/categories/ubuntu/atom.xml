@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ubuntu | Shooter's Blog]]></title>
-  <link href="http://shooterman.github.com/blog/categories/ubuntu/atom.xml" rel="self"/>
-  <link href="http://shooterman.github.com/"/>
-  <updated>2014-01-12T14:57:03+08:00</updated>
-  <id>http://shooterman.github.com/</id>
+  <link href="http://shooterman.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Ubuntu 12.04的安装和配置(二)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/"/>
     <updated>2012-08-27T20:12:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration</id>
+    <id>http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration</id>
     <content type="html"><![CDATA[<p>上一篇坑挖了一半，今天一定要把坑挖好。</p>
 
 <p>继续 <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
@@ -154,16 +154,16 @@ $ sudo apt-get install mysql-server mysql-client
   
   <entry>
     <title type="html"><![CDATA[Ubuntu 12.04的安装和配置(一)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/"/>
     <updated>2012-08-26T17:26:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration</id>
+    <id>http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration</id>
     <content type="html"><![CDATA[<p> <a href="http://www.ubuntu.com/">Ubuntu 12.04</a> 出来有段时间了，一直没有更新，本想从11.10的系统
  直接升级，结果脆生生挂掉了，好多东西拿不出来了。杯具，重装吧！</p>
 
 <p> 主要是 ruby on rails 和它相关联的在 ubuntu 上的安装配置。
  包括 <a href="https://rvm.io/">rvm</a> , ruby on rails, Sublime Text,
  <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
- <a href="http://www.mongodb.org/">mogoDB</a>, <a href="http://redis.io/">redis</a> 的安装，
+ <a href="http://www.mongodb.org/">mongodb</a>, <a href="http://redis.io/">redis</a> 的安装，
  顺便把 <a href="http://nodejs.org/">Node.js</a> 也装上，当作汇总了。</p>
 
 <h2>安装Ubuntu 12-04</h2>

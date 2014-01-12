@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Shooter's Blog]]></title>
-  <link href="http://shooterman.github.com/atom.xml" rel="self"/>
-  <link href="http://shooterman.github.com/"/>
-  <updated>2014-01-12T14:57:03+08:00</updated>
-  <id>http://shooterman.github.com/</id>
+  <link href="http://shooterman.github.io/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
     
@@ -14,10 +14,71 @@
 
   
   <entry>
+    <title type="html"><![CDATA[2013年年终总结]]></title>
+    <link href="http://shooterman.github.io/blog/2014/01/12/2013-summary/"/>
+    <updated>2014-01-12T15:48:29+08:00</updated>
+    <id>http://shooterman.github.io/blog/2014/01/12/2013-summary</id>
+    <content type="html"><![CDATA[<p>匆匆忙忙的一年又过去了, 万分感慨，时间过得好快。今天好好总结一下。</p>
+
+<h3>跨年晚上写在Evernote的总结:</h3>
+
+<p>每每感觉时间过得好快，尤其是今年，可能岁数越大越觉得时间过得快。
+今年喜忧参半。</p>
+
+<h4>最难过的事：</h4>
+
+<p>姥爷在12月20日晚上突然去世，我们都没在身边，是满满的愧疚。
+中秋节，专门回老家，去看了看他们，过程不算愉快吧，没想到竟是最后一面！</p>
+
+<h4>最开心的事：</h4>
+
+<p>找到了她，也许真的是上辈子的缘分，自然而然的在一起了，
+我的忧伤与欢乐有她分享了。</p>
+
+<h4>最尴尬的事：</h4>
+
+<p>2013年4月底从公司辞职，其实早有准备，
+与公司的文化、开发团队的理念合不来，捱过这半年很痛苦。
+不过缓解了我的经济压力，买了mac mini 当开发机。</p>
+
+<p>接下来的3个月找工作，先去了趟青岛，高高兴兴的玩了一阵，然后回到北京找工作。
+在找工作的这段期间，暴露了很多问题： 算法是永远的痛，表达的思路不是很清楚 &#8230;&#8230;</p>
+
+<hr />
+
+<h3>今日总结:</h3>
+
+<p>针对算法的短板，我找到了 <a href="http://projecteuler.net/">projecteuler</a>，
+做了一些练习题,放到了<a href="https://github.com/shooterman/projecteuler.net">我的github的project中</a>。
+对我来说挑战不小，而且之后因为工作的原因，也做不下去了。
+<strong>抽出时间继续做 projecteuler</strong>，
+对于难的问题，一周完成一个还不行么，这么低的要求，还完成不了么?</p>
+
+<p><strong>写blog要勤快</strong>， 写blog也是一种锻炼思维的方式。</p>
+
+<p>发现一本涉及ruby底层的书 <a href="http://patshaughnessy.net/ruby-under-a-microscope">Ruby Under a Microscope</a>，很赞，纯英文，还可以提高英语水平。
+<strong>读完 Ruby Under a Microscope</strong>。</p>
+
+<p><strong>积极锻炼身体</strong>，现在体重涨了，再不加强锻炼，以后咋面对媳妇！？ 基本上没经验，
+一定要现在起步，从长计议。</p>
+
+<p><strong>完成个人的一个小项目或者接一个小的外包</strong> ， 2013最缺什么，money!</p>
+
+<p>对于表达交流上的问题，有意识的去控制语速，列出提纲，多参加一些交流活动。
+前段时间参加了rails girls，当coach，是一种不错的锻炼。
+有时间的话，一定要<strong>多参加活动</strong>，积累好人缘。</p>
+
+<p><strong>希望我和她幸福快乐</strong></p>
+
+<p>PS:  GF生病发烧了，我不在身边，快点好起来吧！阿门</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[CentOS 5.6 离线安装Ruby环境及配置项目]]></title>
-    <link href="http://shooterman.github.com/blog/2013/01/03/centos-offline-install-ruby-environment/"/>
+    <link href="http://shooterman.github.io/blog/2013/01/03/centos-offline-install-ruby-environment/"/>
     <updated>2013-01-03T15:43:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2013/01/03/centos-offline-install-ruby-environment</id>
+    <id>http://shooterman.github.io/blog/2013/01/03/centos-offline-install-ruby-environment</id>
     <content type="html"><![CDATA[<p>遇到了这么个小问题，需要把完成的railsApp打包到CentOS上，而且服务器不能联网，
 ruby 环境也没有安装。一番捣鼓，步骤如下:</p>
 
@@ -110,9 +171,9 @@ ruby 环境也没有安装。一番捣鼓，步骤如下:</p>
   
   <entry>
     <title type="html"><![CDATA[再见2012, 你好2013]]></title>
-    <link href="http://shooterman.github.com/blog/2013/01/01/goodbye-2012-hello-2013/"/>
+    <link href="http://shooterman.github.io/blog/2013/01/01/goodbye-2012-hello-2013/"/>
     <updated>2013-01-01T16:43:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2013/01/01/goodbye-2012-hello-2013</id>
+    <id>http://shooterman.github.io/blog/2013/01/01/goodbye-2012-hello-2013</id>
     <content type="html"><![CDATA[<p>当我还在2011憧憬2012的时候，它走到了末尾，迎来了2013，时间走的好快。</p>
 
 <p><del>说好的末日没有来，爱情也木来 </del></p>
@@ -178,9 +239,9 @@ GUI方面比ruby强了很多。java语法太琐碎了，概念性的东西一大
   
   <entry>
     <title type="html"><![CDATA[Ruby的yield和闭包]]></title>
-    <link href="http://shooterman.github.com/blog/2012/09/15/the-ruby-syntax-yield-and-closure/"/>
+    <link href="http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure/"/>
     <updated>2012-09-15T02:06:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/09/15/the-ruby-syntax-yield-and-closure</id>
+    <id>http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure</id>
     <content type="html"><![CDATA[<p><strong>First Blood</strong>  来些血腥凶残暴力的！
 这些经常在面试中被提问，内容很多。
 从面试里单独拿出来，这东西相当于神器级别，必须谨慎对待。</p>
@@ -379,9 +440,9 @@ lambda跟Proc就像两个双胞胎</p>
   
   <entry>
     <title type="html"><![CDATA[RoR的一些面试经验(一)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/09/05/interview-questions-about-the-ror/"/>
+    <link href="http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror/"/>
     <updated>2012-09-05T01:30:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/09/05/interview-questions-about-the-ror</id>
+    <id>http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror</id>
     <content type="html"><![CDATA[<p> 那些天我不是在面试，就是在面试的路上，搞得很懈怠，主要还是精神上的。
  有的中规中矩;有的问题很琐碎;有的很BT,概念性的东西一股闹的全抛出来了&#8230;&#8230;
  我记性不太好，对概念不感冒，倒不是从小这样，记得当年还背过视力表，
@@ -474,9 +535,9 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
   
   <entry>
     <title type="html"><![CDATA[翻越GFW 走向世界]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/31/across-the-great-wall/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/31/across-the-great-wall/"/>
     <updated>2012-08-31T05:02:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/31/across-the-great-wall</id>
+    <id>http://shooterman.github.io/blog/2012/08/31/across-the-great-wall</id>
     <content type="html"><![CDATA[<p>&#8220;Across the Great Wall we can reach every corner in the world.&#8221;</p>
 
 <p>中国不愧为文明古国，早有先见之明，古有长城，今有×××，人们乐此不疲的到墙外透透气儿。
@@ -574,9 +635,9 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
   
   <entry>
     <title type="html"><![CDATA[Ubuntu 12.04的安装和配置(二)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/"/>
     <updated>2012-08-27T20:12:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration</id>
+    <id>http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration</id>
     <content type="html"><![CDATA[<p>上一篇坑挖了一半，今天一定要把坑挖好。</p>
 
 <p>继续 <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
@@ -748,16 +809,16 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
   
   <entry>
     <title type="html"><![CDATA[Ubuntu 12.04的安装和配置(一)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/"/>
     <updated>2012-08-26T17:26:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration</id>
+    <id>http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration</id>
     <content type="html"><![CDATA[<p> <a href="http://www.ubuntu.com/">Ubuntu 12.04</a> 出来有段时间了，一直没有更新，本想从11.10的系统
  直接升级，结果脆生生挂掉了，好多东西拿不出来了。杯具，重装吧！</p>
 
 <p> 主要是 ruby on rails 和它相关联的在 ubuntu 上的安装配置。
  包括 <a href="https://rvm.io/">rvm</a> , ruby on rails, Sublime Text,
  <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
- <a href="http://www.mongodb.org/">mogoDB</a>, <a href="http://redis.io/">redis</a> 的安装，
+ <a href="http://www.mongodb.org/">mongodb</a>, <a href="http://redis.io/">redis</a> 的安装，
  顺便把 <a href="http://nodejs.org/">Node.js</a> 也装上，当作汇总了。</p>
 
 <h2>安装Ubuntu 12-04</h2>
@@ -912,9 +973,9 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
   
   <entry>
     <title type="html"><![CDATA[我用到的 Sublime Text 2 插件]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/08/my-sublime-text-2-plugin-summary/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/08/my-sublime-text-2-plugin-summary/"/>
     <updated>2012-08-08T20:24:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/08/my-sublime-text-2-plugin-summary</id>
+    <id>http://shooterman.github.io/blog/2012/08/08/my-sublime-text-2-plugin-summary</id>
     <content type="html"><![CDATA[<p> <a href="http://www.sublimetext.com/">Sublime Text 2</a> 是在俺剛學習<strong>Ruby</strong>時大大們極力推薦的，真的超贊。
  Sublime Text是用<a href="http://zh.wikipedia.org/zh/Python">python语言</a>编写。如果熟悉<a href="http://www.python.org/">python</a>，你也可以编写插件實現自己想要的功能。目前插件集中在github上，需要在线安装。安装插件前需要 <strong>安装包控制(Package Control)</strong></p>
 
@@ -969,9 +1030,9 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
   
   <entry>
     <title type="html"><![CDATA[My First Blog]]></title>
-    <link href="http://shooterman.github.com/blog/2012/07/24/my-first-blog/"/>
+    <link href="http://shooterman.github.io/blog/2012/07/24/my-first-blog/"/>
     <updated>2012-07-24T21:33:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/07/24/my-first-blog</id>
+    <id>http://shooterman.github.io/blog/2012/07/24/my-first-blog</id>
     <content type="html"><![CDATA[<p>我的Blog开张了！</p>
 ]]></content>
   </entry>

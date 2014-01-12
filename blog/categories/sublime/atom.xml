@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Sublime | Shooter's Blog]]></title>
-  <link href="http://shooterman.github.com/blog/categories/sublime/atom.xml" rel="self"/>
-  <link href="http://shooterman.github.com/"/>
-  <updated>2014-01-12T14:57:03+08:00</updated>
-  <id>http://shooterman.github.com/</id>
+  <link href="http://shooterman.github.io/blog/categories/sublime/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[我用到的 Sublime Text 2 插件]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/08/my-sublime-text-2-plugin-summary/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/08/my-sublime-text-2-plugin-summary/"/>
     <updated>2012-08-08T20:24:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/08/my-sublime-text-2-plugin-summary</id>
+    <id>http://shooterman.github.io/blog/2012/08/08/my-sublime-text-2-plugin-summary</id>
     <content type="html"><![CDATA[<p> <a href="http://www.sublimetext.com/">Sublime Text 2</a> 是在俺剛學習<strong>Ruby</strong>時大大們極力推薦的，真的超贊。
  Sublime Text是用<a href="http://zh.wikipedia.org/zh/Python">python语言</a>编写。如果熟悉<a href="http://www.python.org/">python</a>，你也可以编写插件實現自己想要的功能。目前插件集中在github上，需要在线安装。安装插件前需要 <strong>安装包控制(Package Control)</strong></p>
 

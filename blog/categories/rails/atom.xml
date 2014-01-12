@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Rails | Shooter's Blog]]></title>
-  <link href="http://shooterman.github.com/blog/categories/rails/atom.xml" rel="self"/>
-  <link href="http://shooterman.github.com/"/>
-  <updated>2014-01-12T14:57:03+08:00</updated>
-  <id>http://shooterman.github.com/</id>
+  <link href="http://shooterman.github.io/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Ruby的yield和闭包]]></title>
-    <link href="http://shooterman.github.com/blog/2012/09/15/the-ruby-syntax-yield-and-closure/"/>
+    <link href="http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure/"/>
     <updated>2012-09-15T02:06:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/09/15/the-ruby-syntax-yield-and-closure</id>
+    <id>http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure</id>
     <content type="html"><![CDATA[<p><strong>First Blood</strong>  来些血腥凶残暴力的！
 这些经常在面试中被提问，内容很多。
 从面试里单独拿出来，这东西相当于神器级别，必须谨慎对待。</p>
@@ -140,9 +140,9 @@ puts lambda_return # => lambda_return method finished
   
   <entry>
     <title type="html"><![CDATA[RoR的一些面试经验(一)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/09/05/interview-questions-about-the-ror/"/>
+    <link href="http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror/"/>
     <updated>2012-09-05T01:30:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/09/05/interview-questions-about-the-ror</id>
+    <id>http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror</id>
     <content type="html"><![CDATA[<p> 那些天我不是在面试，就是在面试的路上，搞得很懈怠，主要还是精神上的。
  有的中规中矩;有的问题很琐碎;有的很BT,概念性的东西一股闹的全抛出来了......
  我记性不太好，对概念不感冒，倒不是从小这样，记得当年还背过视力表，

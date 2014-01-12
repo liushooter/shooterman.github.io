@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ruby | Shooter's Blog]]></title>
-  <link href="http://shooterman.github.com/blog/categories/ruby/atom.xml" rel="self"/>
-  <link href="http://shooterman.github.com/"/>
-  <updated>2014-01-12T14:57:03+08:00</updated>
-  <id>http://shooterman.github.com/</id>
+  <link href="http://shooterman.github.io/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[CentOS 5.6 离线安装Ruby环境及配置项目]]></title>
-    <link href="http://shooterman.github.com/blog/2013/01/03/centos-offline-install-ruby-environment/"/>
+    <link href="http://shooterman.github.io/blog/2013/01/03/centos-offline-install-ruby-environment/"/>
     <updated>2013-01-03T15:43:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2013/01/03/centos-offline-install-ruby-environment</id>
+    <id>http://shooterman.github.io/blog/2013/01/03/centos-offline-install-ruby-environment</id>
     <content type="html"><![CDATA[<p>遇到了这么个小问题，需要把完成的railsApp打包到CentOS上，而且服务器不能联网，
 ruby 环境也没有安装。一番捣鼓，步骤如下:</p>
 
@@ -94,9 +94,9 @@ $ bundle install --local  #本地安装gem
   
   <entry>
     <title type="html"><![CDATA[Ruby的yield和闭包]]></title>
-    <link href="http://shooterman.github.com/blog/2012/09/15/the-ruby-syntax-yield-and-closure/"/>
+    <link href="http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure/"/>
     <updated>2012-09-15T02:06:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/09/15/the-ruby-syntax-yield-and-closure</id>
+    <id>http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure</id>
     <content type="html"><![CDATA[<p><strong>First Blood</strong>  来些血腥凶残暴力的！
 这些经常在面试中被提问，内容很多。
 从面试里单独拿出来，这东西相当于神器级别，必须谨慎对待。</p>
@@ -219,9 +219,9 @@ puts lambda_return # => lambda_return method finished
   
   <entry>
     <title type="html"><![CDATA[RoR的一些面试经验(一)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/09/05/interview-questions-about-the-ror/"/>
+    <link href="http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror/"/>
     <updated>2012-09-05T01:30:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/09/05/interview-questions-about-the-ror</id>
+    <id>http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror</id>
     <content type="html"><![CDATA[<p> 那些天我不是在面试，就是在面试的路上，搞得很懈怠，主要还是精神上的。
  有的中规中矩;有的问题很琐碎;有的很BT,概念性的东西一股闹的全抛出来了......
  我记性不太好，对概念不感冒，倒不是从小这样，记得当年还背过视力表，
@@ -289,9 +289,9 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
   
   <entry>
     <title type="html"><![CDATA[Ubuntu 12.04的安装和配置(二)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/"/>
     <updated>2012-08-27T20:12:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration</id>
+    <id>http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration</id>
     <content type="html"><![CDATA[<p>上一篇坑挖了一半，今天一定要把坑挖好。</p>
 
 <p>继续 <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
@@ -428,16 +428,16 @@ $ sudo apt-get install mysql-server mysql-client
   
   <entry>
     <title type="html"><![CDATA[Ubuntu 12.04的安装和配置(一)]]></title>
-    <link href="http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/"/>
+    <link href="http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/"/>
     <updated>2012-08-26T17:26:00+08:00</updated>
-    <id>http://shooterman.github.com/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration</id>
+    <id>http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration</id>
     <content type="html"><![CDATA[<p> <a href="http://www.ubuntu.com/">Ubuntu 12.04</a> 出来有段时间了，一直没有更新，本想从11.10的系统
  直接升级，结果脆生生挂掉了，好多东西拿不出来了。杯具，重装吧！</p>
 
 <p> 主要是 ruby on rails 和它相关联的在 ubuntu 上的安装配置。
  包括 <a href="https://rvm.io/">rvm</a> , ruby on rails, Sublime Text,
  <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
- <a href="http://www.mongodb.org/">mogoDB</a>, <a href="http://redis.io/">redis</a> 的安装，
+ <a href="http://www.mongodb.org/">mongodb</a>, <a href="http://redis.io/">redis</a> 的安装，
  顺便把 <a href="http://nodejs.org/">Node.js</a> 也装上，当作汇总了。</p>
 
 <h2>安装Ubuntu 12-04</h2>
