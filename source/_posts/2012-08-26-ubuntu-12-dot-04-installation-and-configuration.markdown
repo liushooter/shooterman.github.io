@@ -11,7 +11,7 @@ categories:  ubuntu ruby
  主要是 ruby on rails 和它相关联的在 ubuntu 上的安装配置。
  包括 [rvm](https://rvm.io/) , ruby on rails, Sublime Text, 
  [passenger](http://www.modrails.com/), [nginx](http://wiki.nginx.org/Main), 
- [mogoDB](http://www.mongodb.org/), [redis](http://redis.io/) 的安装，
+ [mongodb](http://www.mongodb.org/), [redis](http://redis.io/) 的安装，
  顺便把 [Node.js](http://nodejs.org/) 也装上，当作汇总了。
 ## 安装Ubuntu 12-04
 首先准备好12.04的 iso 镜像，需要先从官网下载，我是把iso文件写入U盘后安装的。
