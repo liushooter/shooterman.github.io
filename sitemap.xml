@@ -2,60 +2,64 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://shooterman.github.io/blog/2012/07/24/my-first-blog/</loc>
-        <lastmod>2014-01-12T14:55:44+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://shooterman.github.io/blog/2012/08/08/my-sublime-text-2-plugin-summary/</loc>
-        <lastmod>2014-01-12T14:53:59+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/
         </loc>
-        <lastmod>2014-01-12T15:46:31+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/
         </loc>
-        <lastmod>2014-01-12T14:49:54+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://shooterman.github.io/blog/2012/08/31/across-the-great-wall/</loc>
-        <lastmod>2014-01-12T14:53:23+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror/</loc>
-        <lastmod>2014-01-12T14:54:12+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure/</loc>
-        <lastmod>2014-01-12T14:54:19+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://shooterman.github.io/blog/2013/01/01/goodbye-2012-hello-2013/</loc>
-        <lastmod>2014-01-12T14:55:55+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>
             http://shooterman.github.io/blog/2013/01/03/centos-offline-install-ruby-environment/
         </loc>
-        <lastmod>2014-01-12T14:14:01+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://shooterman.github.io/blog/2013/11/08/resque-for-rails/</loc>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://shooterman.github.io/blog/2014/01/12/2013-summary/</loc>
-        <lastmod>2014-01-12T17:52:58+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://shooterman.github.io/</loc>
-        <lastmod>2014-01-12T17:52:58+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://shooterman.github.io/blog/archives/</loc>
-        <lastmod>2014-01-12T17:52:58+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://shooterman.github.io/</loc>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
     <url>
         <loc>http://shooterman.github.io/robots.txt</loc>
-        <lastmod>2014-01-12T13:30:55+08:00</lastmod>
+        <lastmod>2014-01-13T15:40:06+08:00</lastmod>
     </url>
 </urlset>

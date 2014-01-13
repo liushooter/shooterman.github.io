@@ -9,8 +9,7 @@
   <meta name="author" content="shooter">
 
   
-  <meta name="description" content="&#8220;Across the Great Wall we can reach every corner in the world.&#8221; 中国不愧为文明古国，早有先见之明，古有长城，今有×××，人们乐此不疲的到墙外透透气儿。
-不知何时翻墙也晋升为程序猿的基本功——仅是个人观点。 &hellip;">
+  <meta name="description" content="那些天我不是在面试，就是在面试的路上，搞得很懈怠，主要还是精神上的。 有的中规中矩;有的问题很琐碎;有的很BT,概念性的东西一股闹的全抛出来了&#8230;&#8230; 我记性不太好，对概念不感冒，倒不是从小这样，记得当年还背过视力表， 可能三聚氰胺喝多了吧。 Symbol与String &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +77,131 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/09/05/interview-questions-about-the-ror/">RoR的一些面试经验(一)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-05T01:30:00+08:00" pubdate data-updated="true">2012-9-5</time>
+        
+           | <a href="/blog/2012/09/05/interview-questions-about-the-ror/#disqus_thread"
+             data-disqus-identifier="http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p> 那些天我不是在面试，就是在面试的路上，搞得很懈怠，主要还是精神上的。
+ 有的中规中矩;有的问题很琐碎;有的很BT,概念性的东西一股闹的全抛出来了&#8230;&#8230;
+ 我记性不太好，对概念不感冒，倒不是从小这样，记得当年还背过视力表，
+ 可能三聚氰胺喝多了吧。</p>
+
+<h3>Symbol与String</h3>
+
+<p>在rails中经常看到Symbol，像 <code>:name  :email params[:user]</code>，
+这种已:开头的变量就是Symbol对象。貌似我经常把两者混用，还有些不同的。</p>
+
+<p><strong>创建 symbol 对象</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> :foo
+</span><span class='line'> :"shooter"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在 Ruby 中每一个对象都有唯一的对象标识符（Object Identifier），可以通过 object_id 方法来得到一个对象的标识符。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1.9.3p194 :001 &gt; 3.times{ puts :foo.object_id }
+</span><span class='line'>230808
+</span><span class='line'>230808
+</span><span class='line'>230808
+</span><span class='line'> =&gt; 3 
+</span><span class='line'>1.9.3p194 :002 &gt; 3.times{ puts "foo".object_id }
+</span><span class='line'>85823400
+</span><span class='line'>85823380
+</span><span class='line'>85823350
+</span><span class='line'> =&gt; 3 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>一个字符串每出现一次 Ruby 就会创建一个 String对象，即便他们包含了相同的字符串内容；
+而对于 Symbol 对象，一个名字（字符串内容）唯一确定一个 Symbol 对象。
+Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
+而且在运行环境中symbol的值也不会改变，直到程序执行退出。</p>
+
+<p><strong>相互转化</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Symbol到String
+</span><span class='line'>
+</span><span class='line'>1.9.3p194 :001 &gt; :foo.id2name
+</span><span class='line'> =&gt; "foo" 
+</span><span class='line'>1.9.3p194 :002 &gt; :foo.to_s
+</span><span class='line'> =&gt; "foo" 
+</span><span class='line'>1.9.3p194 :003 &gt; :"I am a rubyist"
+</span><span class='line'> =&gt; :"I am a rubyist" 
+</span><span class='line'>
+</span><span class='line'># String到Symbol
+</span><span class='line'>
+</span><span class='line'>1.9.3p194 :004 &gt; "rubyist".to_sym
+</span><span class='line'> =&gt; :rubyist 
+</span><span class='line'>1.9.3p194 :005 &gt; "rubyist".intern
+</span><span class='line'> =&gt; :rubyist </span></code></pre></td></tr></table></div></figure>
+
+
+<p>从实用角度看，在一些场景下Symbol好过String只有两点：<strong>节省内存，表达简洁</strong> <br/>
+通常来讲，当你面临 String 还是 Symbol 的选择时，可以参考以下标准：<br/>
+&nbsp;&nbsp;如果使用字符串的内容，这个内容可能会变化，使用 String <br/>
+&nbsp;&nbsp;如果使用固定的名字或者说是标识符，使用 Symbol。</p>
+
+<p>这是第一篇，没想到一个内容就这么多，再写东西就有些多了，果断阉割了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -694,46 +818,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/24/my-first-blog/">My First Blog</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-24T21:33:00+08:00" pubdate data-updated="true">2012-7-24</time>
-        
-           | <a href="/blog/2012/07/24/my-first-blog/#disqus_thread"
-             data-disqus-identifier="http://shooterman.github.io/blog/2012/07/24/my-first-blog/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>我的Blog开张了！</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -752,6 +839,10 @@
       </li>
     
       <li class="post">
+        <a href="/blog/2013/11/08/resque-for-rails/">Rails使用队列resque</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a>
       </li>
     
@@ -761,10 +852,6 @@
     
       <li class="post">
         <a href="/blog/2012/09/15/the-ruby-syntax-yield-and-closure/">Ruby的yield和闭包</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/09/05/interview-questions-about-the-ror/">RoR的一些面试经验(一)</a>
       </li>
     
   </ul>

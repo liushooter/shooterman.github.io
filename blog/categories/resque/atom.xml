@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Resque | Shooter's Blog]]></title>
+  <link href="http://shooterman.github.io/blog/categories/resque/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-13T15:45:15+08:00</updated>
+  <id>http://shooterman.github.io/</id>
+  <author>
+    <name><![CDATA[shooter]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails使用队列resque]]></title>
+    <link href="http://shooterman.github.io/blog/2013/11/08/resque-for-rails/"/>
+    <updated>2013-11-08T12:13:40+08:00</updated>
+    <id>http://shooterman.github.io/blog/2013/11/08/resque-for-rails</id>
+    <content type="html"><![CDATA[<h3>准备</h3>
+
+<p><a href="https://github.com/resque/resque">Resque</a> 依赖 <a href="http://redis.io/">Redis</a>，
+请先安装reids数据库。</p>
+
+<hr />
+
+<h3>安装Resque</h3>
+
+<pre><code>gem "resque", "~&gt; 1.25.1"
+</code></pre>
+
+<p>运行 resque-web 会打开 http://0.0.0.0:5678/overview</p>
+
+<h5>创建Rake</h5>
+
+<p>lib/tasks/resque.rake</p>
+
+<p>```ruby
+  require 'resque/tasks'</p>
+
+<p>  task "resque:setup" => :environment</p>
+
+<p>  # task "resque:setup" => :environment do
+  #   ENV['QUEUE'] = "*"
+  # end
+  # 执行 rake resque:work 会启动所有队列</p>
+
+<p>```</p>
+
+<h5>创建任务</h5>
+
+<p>app/workers/resque_job.rb</p>
+
+<p>```ruby
+class ResqueJob
+  @queue = :resque_job #定义队列名称</p>
+
+<p>  def self.perform(u_name) #必须定义 执行方法体</p>
+
+<pre><code>puts "hello #{u_name}"
+</code></pre>
+
+<p>  end
+end</p>
+
+<p>```</p>
+
+<h5>启动 queue</h5>
+
+<p>rake resque:work QUEUE='*' #启动所有队列</p>
+
+<p>rake resque:work QUEUE='resque_job' #启动队列名称为resque_job的单个队列</p>
+
+<h5>调用 queue</h5>
+
+<p><code>ruby
+Resque.enqueue(ResqueJob,"everyone") #调用队列
+</code></p>
+
+<h4>项目中查看resque任务</h4>
+
+<p><code>ruby
+gem "resque", "~&gt; 1.25.1", :require =&gt; "resque/server"
+mount Resque::Server, :at =&gt; "/resque" # routes.rb
+</code></p>
+
+<p>访问 http://0.0.0.0:3000/resque/overview</p>
+
+<h4>限制访问</h4>
+
+<p>```ruby
+  # config/initializers/resque_auth.rb
+  Resque::Server.use(Rack::Auth::Basic) do |user, password|</p>
+
+<pre><code>password == "password"
+</code></pre>
+
+<p>  end
+```</p>
+
+<hr />
+
+<h3>Redis 命令行</h3>
+
+<p>```
+redis-server #Redis服务器的daemon启动程序</p>
+
+<p>redis-cli #Redis命令行操作工具。当然，你也可以用telnet根据其纯文本协议来操作</p>
+
+<p>redis-benchmark #Redis性能测试工具，测试Redis在你的系统及你的配置下的读写性能</p>
+
+<p>redis-stat #Redis状态检测工具，可以检测Redis当前状态参数及延迟状况</p>
+
+<p>```</p>
+
+<hr />
+
+<h3>定时队列</h3>
+
+<pre><code>gem "resque-scheduler", "~&gt; 2.0.1"  :require =&gt; "resque_scheduler"
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
