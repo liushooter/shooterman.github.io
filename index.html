@@ -176,6 +176,182 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/11/22/5-useful-tips-for-a-better-commit-message/">写出好的 Commit Message</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-22T16:39:16+08:00" pubdate data-updated="true">2013-11-22</time>
+        
+           | <a href="/blog/2013/11/22/5-useful-tips-for-a-better-commit-message/#disqus_thread"
+             data-disqus-identifier="http://shooterman.github.io/blog/2013/11/22/5-useful-tips-for-a-better-commit-message/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>为什幺要关注提交信息</h2>
+
+<ul>
+<li>加快 Reviewing Code 的过程</li>
+<li>帮助我们写好 release note</li>
+<li>5年后帮你快速想起来某个分支，tag 或者 commit 增加了什么功能，改变了哪些代码</li>
+<li>让其他的开发者在运行 <code>git blame</code> 的时候想跪谢</li>
+<li>总之一个好的提交信息，会帮助你提高项目的整体质量</li>
+</ul>
+
+
+<h2>基本要求</h2>
+
+<ul>
+<li>第一行应该少于50个字。 <strong>随后是一个空行</strong> 第一行题目也可以写成：<code>Fix issue #8976</code></li>
+<li>喜欢用 vim 的哥们把下面这行代码加入 <em>.vimrc</em> 文件中，来检查拼写和自动折行</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>autocmd Filetype gitcommit setlocal spell textwidth=72</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>永远不在 <code>git commit</code> 上增加 <code>-m &lt;msg&gt;</code> 或 <code>--message=&lt;msg&gt;</code> 参数，而单独写提交信息</li>
+</ul>
+
+
+<p>一个不好的例子 <code>git commit -m "Fix login bug"</code></p>
+
+<p>一个推荐的 commit message 应该是这样：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Redirect user to the requested page after login
+</span><span class='line'>
+</span><span class='line'>https://trello.com/path/to/relevant/card
+</span><span class='line'>
+</span><span class='line'>Users were being redirected to the home page after login, which is less
+</span><span class='line'>useful than redirecting to the page they had originally requested before
+</span><span class='line'>being redirected to the login form.
+</span><span class='line'>
+</span><span class='line'>* Store requested path in a session variable
+</span><span class='line'>* Redirect to the stored location after successfully logging in the user</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>注释最好包含一个连接指向你们项目的 issue/story/card。一个完整的连接比一个 issue numbers 更好</li>
+<li>提交信息中包含一个简短的故事，能让别人更容易理解你的项目</li>
+</ul>
+
+
+<h2>注释要回答如下信息</h2>
+
+<p><strong>为什么这次修改是必要的？</strong></p>
+
+<p>要告诉 Reviewers，你的提交包含什么改变。让他们更容易审核代码和忽略无关的改变。</p>
+
+<p><strong>如何解决的问题？</strong></p>
+
+<p>这可不是说技术细节。看下面的两个例子：</p>
+
+<p><code>Introduce a red/black tree to increase search speed</code></p>
+
+<p><code>Remove &lt;troublesome gem X&gt;, which was causing &lt;specific description of issue introduced by gem&gt;</code></p>
+
+<p>如果你的修改特别明显，就可以忽略这个。</p>
+
+<p><strong>这些变化可能影响哪些地方？</strong></p>
+
+<p>这是你最需要回答的问题。因为它会帮你你发现在某个 branch 或 commit 中的做了过多的改动。一个提交尽量只做1，2个变化。</p>
+
+<p>你的团队应该有一个自己的行为规则，规定每个 commit 和 branch 最多能含有多少个功能修改。</p>
+
+<h2>小提示</h2>
+
+<ul>
+<li>使用 <em>fix</em>, <em>add</em>, <em>change</em> 而不是 <em>fixed</em>, <em>added</em>, <em>changed</em></li>
+<li>永远别忘了第2行是空行</li>
+<li>用 <em>Line break</em> 来分割提交信息，让它在某些软件里面更容易读</li>
+</ul>
+
+
+<h2>例子</h2>
+
+<pre><code>Fix bug where user can't signup.
+
+[Bug #2873942]
+
+Users were unable to register if they hadn't visited the plans
+and pricing page because we expected that tracking
+information to exist for the logs we create after a user
+signs up.  I fixed this by adding a check to the logger
+to ensure that if that information was not available
+we weren't trying to write it.
+</code></pre>
+
+<br/>
+
+
+<pre><code>Redirect user to the requested page after login
+
+https://trello.com/path/to/relevant/card
+
+Users were being redirected to the home page after login, which is less
+useful than redirecting to the page they had originally requested before
+being redirected to the login form.
+
+* Store requested path in a session variable
+* Redirect to the stored location after successfully logging in the user
+</code></pre>
+
+<h2>延伸阅读</h2>
+
+<ul>
+<li><a href="http://web-design-weekly.com/blog/2013/09/01/a-better-git-commit/">A Note About Git Commit Messages</a></li>
+<li><a href="http://ablogaboutcode.com/2011/03/23/proper-git-commit-messages-and-an-elegant-git-history/">Writing good commit messages</a></li>
+<li><a href="https://github.com/erlang/otp/wiki/Writing-good-commit-messages">Proper Git Commit Messages and an Elegant Git History</a></li>
+<li><a href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">A Better Git Commit</a></li>
+<li><a href="http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message">5 Useful Tips For A Better Commit Message </a></li>
+<li><a href="http://whatthecommit.com/">好玩的提交信息</a></li>
+</ul>
+
+
+<hr />
+
+<h2>出处</h2>
+
+<p>文章由 <strong>Victor</strong> 翻译，并发表在<a href="http://ruby-china.org/topics/15737">ruby-china</a>上。
+本人只是伸手党</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/11/08/resque-for-rails/">Rails使用队列resque</a></h1>
     
     
@@ -554,237 +730,6 @@ GUI方面比ruby强了很多。java语法太琐碎了，概念性的东西一大
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/09/15/the-ruby-syntax-yield-and-closure/">Ruby的yield和闭包</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-15T02:06:00+08:00" pubdate data-updated="true">2012-9-15</time>
-        
-           | <a href="/blog/2012/09/15/the-ruby-syntax-yield-and-closure/#disqus_thread"
-             data-disqus-identifier="http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>First Blood</strong>  来些血腥凶残暴力的！
-这些经常在面试中被提问，内容很多。
-从面试里单独拿出来，这东西相当于神器级别，必须谨慎对待。</p>
-
-<p>yield是ruby中一个特殊的关键字，可以调用块方法(block)，而block是ruby闭包的一种，
-故将三者联系起来，yeild天生就是闭包的小跟班儿。感觉没必要单独讲，不然很割裂的赶脚。</p>
-
-<h3><strong> ruby 闭包</strong>   block，Proc，lambda</h3>
-
-<p><strong>block 与 yield</strong>
-block 是最常用到的，有两种形式,{}和do &#8230; end。
-一般单行习惯用{}，多行用do &#8230; end，当然这只是习惯。</p>
-
-<figure class='code'><figcaption><span>demo.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_yield</span>
-</span><span class='line'>  <span class="k">yield</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">test_yield</span><span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;this is first block.&quot;</span> <span class="p">}</span> <span class="c1"># yield可以调用block 即{...}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">test_yield</span> <span class="k">do</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;this is second block.&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">test2_yield</span>
-</span><span class='line'>  <span class="k">yield</span><span class="p">(</span><span class="s2">&quot;shooter&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">test2_yield</span><span class="p">{</span> <span class="o">|</span><span class="n">var</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;This args is </span><span class="si">#{</span><span class="n">var</span><span class="si">}</span><span class="s2">.&quot;</span> <span class="p">}</span>
-</span><span class='line'><span class="c1">#传给yield的参数(此处为shooter)即对应了block中的参数(||中的部分)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>还可以通过 Kernel#block_given? 方法询问当前的方法调用是否包含块。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test</span>
-</span><span class='line'>  <span class="k">return</span> <span class="k">yield</span> <span class="k">if</span> <span class="nb">block_given?</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s1">&#39;no block&#39;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">test</span> <span class="c1"># =&gt; no block</span>
-</span><span class='line'><span class="nb">test</span><span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;Here&#39;s a block&quot;</span> <span class="p">}</span> <span class="c1"># =&gt; Here&#39;s a block</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>Proc对象</strong></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">plus</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">plus</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt;3</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">subtract</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">}</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">subtract</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt;3</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>
-这被称为<strong>延迟执行</strong>(Defferred Evaluation)。</p>
-
-<p>通过<strong>&amp;操作符</strong>，block 与 Proc对象可以相互转化。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">math_one</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">oper</span><span class="p">)</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="k">yield</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">math_two</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">oper</span><span class="p">)</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="n">oper</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">math_one</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">}</span> <span class="c1"># =&gt; 2 + 3 = 5</span>
-</span><span class='line'><span class="n">math_two</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">|</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">}</span> <span class="c1"># =&gt; 2 * 3 = 6</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>那么这个&amp;起了什么作用？</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">my_method</span><span class="p">(</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">code</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">p</span> <span class="o">=</span> <span class="n">my_method</span><span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="s2">&quot;Hello,</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">}</span>
-</span><span class='line'><span class="nb">puts</span> <span class="nb">p</span><span class="o">.</span><span class="n">class</span> <span class="c1"># =&gt; Proc</span>
-</span><span class='line'><span class="nb">puts</span> <span class="nb">p</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;shooter&quot;</span><span class="p">)</span> <span class="c1"># =&gt; Hello,shooter!</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>&amp;操作符的真正含义：Proc对象和块之间的切换符号。&amp;code是一个块，code是一个Proc对象。
-简单的去掉&amp;操作符，我们就能再次得到一个Proc对象。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">proc_to_block</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span>
-</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">greeting</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="k">yield</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">my_proc</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span><span class="s2">&quot;shooter!&quot;</span><span class="p">}</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">my_proc</span><span class="o">.</span><span class="n">class</span>
-</span><span class='line'><span class="n">proc_to_block</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_proc</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>lambda函数</strong>
-lambda跟Proc就像两个双胞胎</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">plus</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">plus</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt;3</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>lambda跟Proc有两个最明显的区别: <br/>
-1. lambda检查参数的个数，Proc不会。<br/>
-&nbsp;在Proc中，多余的参数被设为nil。但lambda中，Ruby会抛出一个ArgumentError错误。<br/>
-2. return不同。<br/>
-&nbsp;lambda的return是返回值给方法，方法会继续执行。Proc的return会终止方法并返回得到的值。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">proc_return</span>
-</span><span class='line'>  <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">&quot;Proc.new&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'>  <span class="k">return</span> <span class="s2">&quot;proc_return method finished&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">def</span> <span class="nf">lambda_return</span>
-</span><span class='line'>  <span class="nb">lambda</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">&quot;lambda&quot;</span> <span class="p">}</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'>  <span class="k">return</span> <span class="s2">&quot;lambda_return method finished&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="nb">puts</span> <span class="n">proc_return</span>    <span class="c1"># =&gt; Proc.new</span>
-</span><span class='line'><span class="nb">puts</span> <span class="n">lambda_return</span> <span class="c1"># =&gt; lambda_return method finished</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>看了代码会一目了然。参考了不少资料，就是拼凑的起来的。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -804,6 +749,10 @@ lambda跟Proc就像两个双胞胎</p>
       </li>
     
       <li class="post">
+        <a href="/blog/2013/11/22/5-useful-tips-for-a-better-commit-message/">写出好的 Commit Message</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/11/08/resque-for-rails/">Rails使用队列resque</a>
       </li>
     
@@ -813,10 +762,6 @@ lambda跟Proc就像两个双胞胎</p>
     
       <li class="post">
         <a href="/blog/2013/01/01/goodbye-2012-hello-2013/">再见2012, 你好2013</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/09/15/the-ruby-syntax-yield-and-closure/">Ruby的yield和闭包</a>
       </li>
     
   </ul>
