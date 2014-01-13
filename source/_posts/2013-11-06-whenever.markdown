@@ -1,0 +1,104 @@
+---
+layout: post
+title: "在rails中创建定时任务"
+date: 2013-11-06 17:30:26 +0800
+comments: true
+categories: rails whenever
+---
+
+[whenever 源码](https://github.com/javan/whenever)
+
+### 安装 运行
+1 gem "whenever", "~> 0.8.4"
+
+2 在命令行输入 ```wheneverize .```
+
+生成config/schedule.rb
+
+3 编写 schedule.rb
+
+```ruby
+env :PATH, ENV['PATH']
+set :output, {:error => File.join(Whenever.path, "log", "cron_err.log"), :standard =>File.join(Whenever.path, "log", "cron_out.log")}
+set :environment, 'development'
+```
+
+4 执行
+
+    whenever #根据schedule.rb 转换成cron语法, 不会写入crontab文件
+
+    whenever --update-crontab #写入crontab文件
+
+    whenever -s environment=development -w ~/minsheng/config/schedule.rb
+
+    whenever --help
+
+### linux crontab 命令
+
+    crontab -l # 列出某个用户cron服务的详细内容
+    crontab -e # 修改
+    crontab -r # 删除某个用户的cron服务
+
+### schedule.rb 示例
+
+```
+every 3.hours do
+  runner "MyModel.some_process"
+  rake "my:rake:task"
+  command "/usr/bin/my_great_command"
+end
+
+every 1.day, :at => '4:30 am' do
+  runner "MyModel.task_to_run_at_four_thirty_in_the_morning"
+end
+
+every :hour do # Many shortcuts available: :hour, :day, :month, :year, :reboot
+  runner "SomeModel.ladeeda"
+end
+
+every :sunday, :at => '12pm' do # Use any day of the week or :weekend, :weekday
+  runner "Task.do_something_great"
+end
+
+every '0 0 27-31 * *' do
+  command "echo 'you can use raw cron syntax too'"
+end
+
+# run this task only on servers with the :app role in Capistrano
+# see Capistrano roles section below
+every :day, :at => '12:20am', :roles => [:app] do
+  rake "app_server:task"
+end
+```
+
+### 定义自己的工作类型
+
+```
+job_type :awesome, '/usr/local/bin/awesome :task :fun_level'
+
+every 2.hours do
+  awesome "party", :fun_level => "extreme"
+end
+```
+
+### whenever 默认的工作类型与定义
+
+```
+job_type :command, ":task :output"
+job_type :rake,    "cd :path && :environment_variable=:environment bundle exec rake :task --silent :output"
+job_type :runner,  "cd :path && script/rails runner -e :environment ':task' :output"
+job_type :script,  "cd :path && :environment_variable=:environment bundle exec script/:task :output"
+```
+
+### RVM 集成
+...
+
+### Capistrano 集成
+...
+
+### 资料
+[What is Cron](http://zh.wikipedia.org/wiki/Cron)
+
+[Rake + cronjob 创建计划任务](http://huacnlee.com/blog/create-rails-task-scheduler-by-rake-and-cronjob/)
+
+[164-cron-in-ruby](http://railscasts.com/episodes/164-cron-in-ruby)
