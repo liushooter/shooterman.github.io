@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: centOS | Shooter's Blog]]></title>
+  <link href="http://shooterman.github.io/blog/categories/centos/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
+  <author>
+    <name><![CDATA[shooter]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CentOS 5.6 离线安装Ruby环境及配置项目]]></title>
+    <link href="http://shooterman.github.io/blog/2013/01/03/centos-offline-install-ruby-environment/"/>
+    <updated>2013-01-03T15:43:00+08:00</updated>
+    <id>http://shooterman.github.io/blog/2013/01/03/centos-offline-install-ruby-environment</id>
+    <content type="html"><![CDATA[<p>遇到了这么个小问题，需要把完成的railsApp打包到CentOS上，而且服务器不能联网，
+ruby 环境也没有安装。一番捣鼓，步骤如下:</p>
+
+<p><strong>没有找到离线安装rvm的方法 而且 linux版本为CentOS 5.6</strong></p>
+
+<h3>下载源文件</h3>
+
+<p><a href="http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p327.tar.gz">ruby-1.9.3-p327</a></p>
+
+<p><a href="http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz">yaml-0.1.4.tar.gz</a></p>
+
+<p><a href="http://rubygems.org/downloads/bundler-1.2.3.gem">bundler-1.2.3</a></p>
+
+<h3>本地服务器</h3>
+
+<h4>打包 rails app</h4>
+
+<p>```
+$ bundle package</p>
+
+<h1>若提示没有,安装bundler并重复以上步骤</h1>
+
+<p>$ gem install bundler
+$ bundle package # 将项目所需要的gem复制到 vendor/cache
+$ tar -czf   railsApp.tar.gz   railsApp #压缩打包
+```</p>
+
+<h3>远程服务器</h3>
+
+<h4><strong>首先安装 yaml-0.1.4.tar.gz，再安装ruby</strong></h4>
+
+<p><code>
+$ tar –xzvf  yaml-0.1.4.tar.gz
+$ ./configure
+$ make
+$ make install
+</code></p>
+
+<h4>安装ruby</h4>
+
+<p><code>
+$ tar  -xzvf  ruby-1.9.3-p327.tar.gz
+$ cd ruby-1.9.3-p327
+$ ./configure
+$ make
+$ make install
+$ ruby -v   #提示即安装成功
+$ gem -v    #gem已经安装
+</code></p>
+
+<h4>本地安装bundler</h4>
+
+<p><code>
+$ gem install  bundler-1.2.3.gem
+$ bundle -v  #提示即安装成功
+</code></p>
+
+<h4>部署 rails app</h4>
+
+<p><code>
+$ tar  -xzvf  railsApp.tar.gz
+$ cd railsApp
+$ bundle install --local  #本地安装gem
+</code></p>
+
+<p><strong>注意修改配置文件</strong></p>
+
+<pre><code>$ rails s  #测试运行
+</code></pre>
+
+<p> <a href="https://gist.github.com/4274057">分享在gist上</a></p>
+]]></content>
+  </entry>
+  
+</feed>

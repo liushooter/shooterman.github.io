@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>RoR的一些面试经验(一) - Shooter's Blog</title>
+  <meta name="author" content="shooter">
+
+  
+  <meta name="description" content="那些天我不是在面试，就是在面试的路上，搞得很懈怠，主要还是精神上的。 有的中规中矩;有的问题很琐碎;有的很BT,概念性的东西一股闹的全抛出来了&#8230;&#8230; 我记性不太好，对概念不感冒，倒不是从小这样，记得当年还背过视力表， 可能三聚氰胺喝多了吧。 Symbol与String &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Shooter's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-33680426-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shooter's Blog</a></h1>
+  
+    <h2>御风而行 世而誉之而不加劝 世而非之而不加沮</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:shooterman.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">RoR的一些面试经验(一)</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-05T01:30:00+08:00" pubdate data-updated="true">2012-9-5</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://shooterman.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p> 那些天我不是在面试，就是在面试的路上，搞得很懈怠，主要还是精神上的。
+ 有的中规中矩;有的问题很琐碎;有的很BT,概念性的东西一股闹的全抛出来了&#8230;&#8230;
+ 我记性不太好，对概念不感冒，倒不是从小这样，记得当年还背过视力表，
+ 可能三聚氰胺喝多了吧。</p>
+
+<h3>Symbol与String</h3>
+
+<p>在rails中经常看到Symbol，像 <code>:name  :email params[:user]</code>，
+这种已:开头的变量就是Symbol对象。貌似我经常把两者混用，还有些不同的。</p>
+
+<p><strong>创建 symbol 对象</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> :foo
+</span><span class='line'> :"shooter"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在 Ruby 中每一个对象都有唯一的对象标识符（Object Identifier），可以通过 object_id 方法来得到一个对象的标识符。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1.9.3p194 :001 &gt; 3.times{ puts :foo.object_id }
+</span><span class='line'>230808
+</span><span class='line'>230808
+</span><span class='line'>230808
+</span><span class='line'> =&gt; 3 
+</span><span class='line'>1.9.3p194 :002 &gt; 3.times{ puts "foo".object_id }
+</span><span class='line'>85823400
+</span><span class='line'>85823380
+</span><span class='line'>85823350
+</span><span class='line'> =&gt; 3 </span></code></pre></td></tr></table></div></figure>
+
+
+<p>一个字符串每出现一次 Ruby 就会创建一个 String对象，即便他们包含了相同的字符串内容；
+而对于 Symbol 对象，一个名字（字符串内容）唯一确定一个 Symbol 对象。
+Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
+而且在运行环境中symbol的值也不会改变，直到程序执行退出。</p>
+
+<p><strong>相互转化</strong></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'># Symbol到String
+</span><span class='line'>
+</span><span class='line'>1.9.3p194 :001 &gt; :foo.id2name
+</span><span class='line'> =&gt; "foo" 
+</span><span class='line'>1.9.3p194 :002 &gt; :foo.to_s
+</span><span class='line'> =&gt; "foo" 
+</span><span class='line'>1.9.3p194 :003 &gt; :"I am a rubyist"
+</span><span class='line'> =&gt; :"I am a rubyist" 
+</span><span class='line'>
+</span><span class='line'># String到Symbol
+</span><span class='line'>
+</span><span class='line'>1.9.3p194 :004 &gt; "rubyist".to_sym
+</span><span class='line'> =&gt; :rubyist 
+</span><span class='line'>1.9.3p194 :005 &gt; "rubyist".intern
+</span><span class='line'> =&gt; :rubyist </span></code></pre></td></tr></table></div></figure>
+
+
+<p>从实用角度看，在一些场景下Symbol好过String只有两点：<strong>节省内存，表达简洁</strong> <br/>
+通常来讲，当你面临 String 还是 Symbol 的选择时，可以参考以下标准：<br/>
+&nbsp;&nbsp;如果使用字符串的内容，这个内容可能会变化，使用 String <br/>
+&nbsp;&nbsp;如果使用固定的名字或者说是标识符，使用 Symbol。</p>
+
+<p>这是第一篇，没想到一个内容就这么多，再写东西就有些多了，果断阉割了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">shooter</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-05T01:30:00+08:00" pubdate data-updated="true">2012-9-5</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/08/31/across-the-great-wall/" title="Previous Post: 翻越GFW 走向世界">&laquo; 翻越GFW 走向世界</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/09/15/the-ruby-syntax-yield-and-closure/" title="Next Post: ruby的yield和闭包">ruby的yield和闭包 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/12/2013-summary/">2013年年终总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/goodbye-2012-hello-2013/">再见2012, 你好2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/15/the-ruby-syntax-yield-and-closure/">Ruby的yield和闭包</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/05/interview-questions-about-the-ror/">RoR的一些面试经验(一)</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shooterman">@shooterman</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shooterman',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - shooter -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'blackbean';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror/';
+        var disqus_url = 'http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

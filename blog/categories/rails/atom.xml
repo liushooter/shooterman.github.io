@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rails | Shooter's Blog]]></title>
+  <link href="http://shooterman.github.io/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
+  <author>
+    <name><![CDATA[shooter]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ruby的yield和闭包]]></title>
+    <link href="http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure/"/>
+    <updated>2012-09-15T02:06:00+08:00</updated>
+    <id>http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure</id>
+    <content type="html"><![CDATA[<p><strong>First Blood</strong>  来些血腥凶残暴力的！
+这些经常在面试中被提问，内容很多。
+从面试里单独拿出来，这东西相当于神器级别，必须谨慎对待。</p>
+
+<p>yield是ruby中一个特殊的关键字，可以调用块方法(block)，而block是ruby闭包的一种，
+故将三者联系起来，yeild天生就是闭包的小跟班儿。感觉没必要单独讲，不然很割裂的赶脚。</p>
+
+<h3><strong> ruby 闭包</strong>   block，Proc，lambda</h3>
+
+<p><strong>block 与 yield</strong>
+block 是最常用到的，有两种形式,{}和do ... end。
+一般单行习惯用{}，多行用do ... end，当然这只是习惯。</p>
+
+<p>``` ruby demo.rb
+def test_yield
+  yield
+end</p>
+
+<p>test_yield{ puts "this is first block." } # yield可以调用block 即{...}</p>
+
+<p>test_yield do
+  puts "this is second block."
+end</p>
+
+<p>def test2_yield<br/>
+  yield("shooter")<br/>
+end</p>
+
+<p>test2_yield{ |var| puts "This args is #{var}." }</p>
+
+<h1>传给yield的参数(此处为shooter)即对应了block中的参数(||中的部分)</h1>
+
+<p>```</p>
+
+<p>还可以通过 Kernel#block_given? 方法询问当前的方法调用是否包含块。
+```ruby
+def test
+  return yield if block_given?
+  puts 'no block'
+end</p>
+
+<p>test # => no block
+test{ puts "Here's a block" } # => Here's a block
+```</p>
+
+<p><strong>Proc对象</strong></p>
+
+<p>```ruby
+plus = Proc.new { |x| x + 1 }
+puts plus.call(2) # =>3</p>
+
+<p>subtract = proc { |x| x - 1 }
+puts subtract.call(4) # =>3
+```
+这被称为<strong>延迟执行</strong>(Defferred Evaluation)。</p>
+
+<p>通过<strong>&amp;操作符</strong>，block 与 Proc对象可以相互转化。</p>
+
+<p>```
+def math_one(a, b, &amp;oper)
+  puts yield(a,b)
+end</p>
+
+<p>def math_two(a, b, &amp;oper)
+  puts oper.call(a,b)
+end</p>
+
+<p>math_one(2,3) { |x,y| x + y} # => 2 + 3 = 5
+math_two(2,3) { |x,y| x * y} # => 2 * 3 = 6
+<code>
+那么这个&amp;起了什么作用？
+</code>ruby
+def my_method(&amp;code)
+  code
+end</p>
+
+<p>p = my_method{ |name| "Hello,#{name}!"}
+puts p.class # => Proc
+puts p.call("shooter") # => Hello,shooter!
+<code>
+&amp;操作符的真正含义：Proc对象和块之间的切换符号。&amp;code是一个块，code是一个Proc对象。
+简单的去掉&amp;操作符，我们就能再次得到一个Proc对象。
+</code>
+def proc_to_block(greeting)
+  puts "#{greeting},#{yield}"
+end</p>
+
+<p>my_proc = Proc.new {"shooter!"}
+puts my_proc.class
+proc_to_block("Hello", &amp;my_proc)
+<code>
+__lambda函数__
+lambda跟Proc就像两个双胞胎
+</code>
+plus = lambda { |x| x + 1 }
+puts plus.call(2) # =>3
+<code>
+lambda跟Proc有两个最明显的区别: &lt;br/&gt;
+1. lambda检查参数的个数，Proc不会。&lt;br/&gt;
+&amp;nbsp;在Proc中，多余的参数被设为nil。但lambda中，Ruby会抛出一个ArgumentError错误。&lt;br/&gt;
+2. return不同。&lt;br/&gt;
+&amp;nbsp;lambda的return是返回值给方法，方法会继续执行。Proc的return会终止方法并返回得到的值。
+</code>
+def proc_return
+  Proc.new { return "Proc.new"}.call
+  return "proc_return method finished"
+end</p>
+
+<p>def lambda_return
+  lambda { return "lambda" }.call
+  return "lambda_return method finished"
+end</p>
+
+<p>puts proc_return    # => Proc.new
+puts lambda_return # => lambda_return method finished
+```
+看了代码会一目了然。参考了不少资料，就是拼凑的起来的。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[RoR的一些面试经验(一)]]></title>
+    <link href="http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror/"/>
+    <updated>2012-09-05T01:30:00+08:00</updated>
+    <id>http://shooterman.github.io/blog/2012/09/05/interview-questions-about-the-ror</id>
+    <content type="html"><![CDATA[<p> 那些天我不是在面试，就是在面试的路上，搞得很懈怠，主要还是精神上的。
+ 有的中规中矩;有的问题很琐碎;有的很BT,概念性的东西一股闹的全抛出来了......
+ 我记性不太好，对概念不感冒，倒不是从小这样，记得当年还背过视力表，
+ 可能三聚氰胺喝多了吧。</p>
+
+<h3>Symbol与String</h3>
+
+<p>在rails中经常看到Symbol，像 <code>:name  :email params[:user]</code>，
+这种已:开头的变量就是Symbol对象。貌似我经常把两者混用，还有些不同的。</p>
+
+<p><strong>创建 symbol 对象</strong>
+<code>
+ :foo
+ :"shooter"
+</code></p>
+
+<p>在 Ruby 中每一个对象都有唯一的对象标识符（Object Identifier），可以通过 object_id 方法来得到一个对象的标识符。</p>
+
+<p><code>
+1.9.3p194 :001 &gt; 3.times{ puts :foo.object_id }
+230808
+230808
+230808
+ =&gt; 3
+1.9.3p194 :002 &gt; 3.times{ puts "foo".object_id }
+85823400
+85823380
+85823350
+ =&gt; 3
+</code>
+一个字符串每出现一次 Ruby 就会创建一个 String对象，即便他们包含了相同的字符串内容；
+而对于 Symbol 对象，一个名字（字符串内容）唯一确定一个 Symbol 对象。
+Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
+而且在运行环境中symbol的值也不会改变，直到程序执行退出。</p>
+
+<p><strong>相互转化</strong></p>
+
+<p>```</p>
+
+<h1>Symbol到String</h1>
+
+<p>1.9.3p194 :001 > :foo.id2name
+ => "foo"
+1.9.3p194 :002 > :foo.to_s
+ => "foo"
+1.9.3p194 :003 > :"I am a rubyist"
+ => :"I am a rubyist"</p>
+
+<h1>String到Symbol</h1>
+
+<p>1.9.3p194 :004 > "rubyist".to_sym
+ => :rubyist
+1.9.3p194 :005 > "rubyist".intern
+ => :rubyist
+```</p>
+
+<p>从实用角度看，在一些场景下Symbol好过String只有两点：<strong>节省内存，表达简洁</strong> <br/>
+通常来讲，当你面临 String 还是 Symbol 的选择时，可以参考以下标准：<br/>
+&nbsp;&nbsp;如果使用字符串的内容，这个内容可能会变化，使用 String <br/>
+&nbsp;&nbsp;如果使用固定的名字或者说是标识符，使用 Symbol。</p>
+
+<p>这是第一篇，没想到一个内容就这么多，再写东西就有些多了，果断阉割了。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,465 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ruby的yield和闭包 - Shooter's Blog</title>
+  <meta name="author" content="shooter">
+
+  
+  <meta name="description" content="First Blood 来些血腥凶残暴力的！
+这些经常在面试中被提问，内容很多。
+从面试里单独拿出来，这东西相当于神器级别，必须谨慎对待。 yield是ruby中一个特殊的关键字，可以调用块方法(block)，而block是ruby闭包的一种，
+故将三者联系起来，yeild天生就是闭包的小跟班儿。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Shooter's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-33680426-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Shooter's Blog</a></h1>
+  
+    <h2>御风而行 世而誉之而不加劝 世而非之而不加沮</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:shooterman.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ruby的yield和闭包</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-15T02:06:00+08:00" pubdate data-updated="true">2012-9-15</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://shooterman.github.io">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><strong>First Blood</strong>  来些血腥凶残暴力的！
+这些经常在面试中被提问，内容很多。
+从面试里单独拿出来，这东西相当于神器级别，必须谨慎对待。</p>
+
+<p>yield是ruby中一个特殊的关键字，可以调用块方法(block)，而block是ruby闭包的一种，
+故将三者联系起来，yeild天生就是闭包的小跟班儿。感觉没必要单独讲，不然很割裂的赶脚。</p>
+
+<h3><strong> ruby 闭包</strong>   block，Proc，lambda</h3>
+
+<p><strong>block 与 yield</strong>
+block 是最常用到的，有两种形式,{}和do &#8230; end。
+一般单行习惯用{}，多行用do &#8230; end，当然这只是习惯。</p>
+
+<figure class='code'><figcaption><span>demo.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test_yield</span>
+</span><span class='line'>  <span class="k">yield</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">test_yield</span><span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;this is first block.&quot;</span> <span class="p">}</span> <span class="c1"># yield可以调用block 即{...}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">test_yield</span> <span class="k">do</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;this is second block.&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">test2_yield</span>
+</span><span class='line'>  <span class="k">yield</span><span class="p">(</span><span class="s2">&quot;shooter&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">test2_yield</span><span class="p">{</span> <span class="o">|</span><span class="n">var</span><span class="o">|</span> <span class="nb">puts</span> <span class="s2">&quot;This args is </span><span class="si">#{</span><span class="n">var</span><span class="si">}</span><span class="s2">.&quot;</span> <span class="p">}</span>
+</span><span class='line'><span class="c1">#传给yield的参数(此处为shooter)即对应了block中的参数(||中的部分)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>还可以通过 Kernel#block_given? 方法询问当前的方法调用是否包含块。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">test</span>
+</span><span class='line'>  <span class="k">return</span> <span class="k">yield</span> <span class="k">if</span> <span class="nb">block_given?</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s1">&#39;no block&#39;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">test</span> <span class="c1"># =&gt; no block</span>
+</span><span class='line'><span class="nb">test</span><span class="p">{</span> <span class="nb">puts</span> <span class="s2">&quot;Here&#39;s a block&quot;</span> <span class="p">}</span> <span class="c1"># =&gt; Here&#39;s a block</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>Proc对象</strong></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">plus</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">plus</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt;3</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">subtract</span> <span class="o">=</span> <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">subtract</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># =&gt;3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+这被称为<strong>延迟执行</strong>(Defferred Evaluation)。</p>
+
+<p>通过<strong>&amp;操作符</strong>，block 与 Proc对象可以相互转化。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">math_one</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">oper</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="k">yield</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">math_two</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">oper</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="n">oper</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">math_one</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">}</span> <span class="c1"># =&gt; 2 + 3 = 5</span>
+</span><span class='line'><span class="n">math_two</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">|</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">}</span> <span class="c1"># =&gt; 2 * 3 = 6</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>那么这个&amp;起了什么作用？</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">my_method</span><span class="p">(</span><span class="o">&amp;</span><span class="n">code</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">code</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">p</span> <span class="o">=</span> <span class="n">my_method</span><span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="s2">&quot;Hello,</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!&quot;</span><span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">p</span><span class="o">.</span><span class="n">class</span> <span class="c1"># =&gt; Proc</span>
+</span><span class='line'><span class="nb">puts</span> <span class="nb">p</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="s2">&quot;shooter&quot;</span><span class="p">)</span> <span class="c1"># =&gt; Hello,shooter!</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>&amp;操作符的真正含义：Proc对象和块之间的切换符号。&amp;code是一个块，code是一个Proc对象。
+简单的去掉&amp;操作符，我们就能再次得到一个Proc对象。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">proc_to_block</span><span class="p">(</span><span class="n">greeting</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">greeting</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="k">yield</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">my_proc</span> <span class="o">=</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span><span class="s2">&quot;shooter!&quot;</span><span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">my_proc</span><span class="o">.</span><span class="n">class</span>
+</span><span class='line'><span class="n">proc_to_block</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_proc</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>lambda函数</strong>
+lambda跟Proc就像两个双胞胎</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">plus</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">}</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">plus</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># =&gt;3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>lambda跟Proc有两个最明显的区别: <br/>
+1. lambda检查参数的个数，Proc不会。<br/>
+&nbsp;在Proc中，多余的参数被设为nil。但lambda中，Ruby会抛出一个ArgumentError错误。<br/>
+2. return不同。<br/>
+&nbsp;lambda的return是返回值给方法，方法会继续执行。Proc的return会终止方法并返回得到的值。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">proc_return</span>
+</span><span class='line'>  <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">&quot;Proc.new&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>  <span class="k">return</span> <span class="s2">&quot;proc_return method finished&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">lambda_return</span>
+</span><span class='line'>  <span class="nb">lambda</span> <span class="p">{</span> <span class="k">return</span> <span class="s2">&quot;lambda&quot;</span> <span class="p">}</span><span class="o">.</span><span class="n">call</span>
+</span><span class='line'>  <span class="k">return</span> <span class="s2">&quot;lambda_return method finished&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">proc_return</span>    <span class="c1"># =&gt; Proc.new</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">lambda_return</span> <span class="c1"># =&gt; lambda_return method finished</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>看了代码会一目了然。参考了不少资料，就是拼凑的起来的。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">shooter</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-15T02:06:00+08:00" pubdate data-updated="true">2012-9-15</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rails/'>rails</a>, <a class='category' href='/blog/categories/ruby/'>ruby</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/09/05/interview-questions-about-the-ror/" title="Previous Post: RoR的一些面试经验(一)">&laquo; RoR的一些面试经验(一)</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/01/01/goodbye-2012-hello-2013/" title="Next Post: 再见2012, 你好2013">再见2012, 你好2013 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/12/2013-summary/">2013年年终总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/01/01/goodbye-2012-hello-2013/">再见2012, 你好2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/15/the-ruby-syntax-yield-and-closure/">Ruby的yield和闭包</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/09/05/interview-questions-about-the-ror/">RoR的一些面试经验(一)</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shooterman">@shooterman</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shooterman',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - shooter -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'blackbean';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure/';
+        var disqus_url = 'http://shooterman.github.io/blog/2012/09/15/the-ruby-syntax-yield-and-closure/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

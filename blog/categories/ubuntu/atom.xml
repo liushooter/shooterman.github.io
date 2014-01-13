@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ubuntu | Shooter's Blog]]></title>
+  <link href="http://shooterman.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
+  <link href="http://shooterman.github.io/"/>
+  <updated>2014-01-12T17:53:12+08:00</updated>
+  <id>http://shooterman.github.io/</id>
+  <author>
+    <name><![CDATA[shooter]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu 12.04的安装和配置(二)]]></title>
+    <link href="http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/"/>
+    <updated>2012-08-27T20:12:00+08:00</updated>
+    <id>http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration</id>
+    <content type="html"><![CDATA[<p>上一篇坑挖了一半，今天一定要把坑挖好。</p>
+
+<p>继续 <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
+ <a href="http://www.mongodb.org/">mongodb</a>, <a href="http://redis.io/">redis</a>,
+ <a href="http://nodejs.org/">Node.js</a>  的安装。</p>
+
+<h4><strong>安装Node.js</strong></h4>
+
+<p>配置好ruby on rails 环境后，创建一个rails 项目</p>
+
+<p><code>
+$ rails new demo
+ ……
+$ cd demo
+$ rails s
+</code>
+一般会提示这样的错误，<code>Could not find a JavaScript runtime ...</code>，
+具体请移步 <a href="http://stackoverflow.com/questions/8059332/could-not-find-a-javascript-runtime-see-https-github-com-sstephenson-execjs-f">stackoverflow</a></p>
+
+<p>在ubuntu环境下，安装node.js即可</p>
+
+<p><code>
+$ sudo apt-get install nodejs
+</code>
+完成后再次运行项目</p>
+
+<h4><strong>安装passenger和nginx</strong></h4>
+
+<p>安装passenger</p>
+
+<p><code>
+$ gem install passenger
+</code>
+安装passenger的nginx模块，nginx一并安装，需要root，我们可以用rvmsudo</p>
+
+<p>```
+rvmsudo passenger-install-nginx-module</p>
+
+<h1>提示哪种安装模式</h1>
+
+<ol>
+<li><p>Yes: download, compile and install Nginx for me. (recommended)</p>
+
+<h1>完全安装</h1></li>
+<li><p>No: I want to customize my Nginx installation. (for advanced users)</p>
+
+<h1>自定义安装</h1>
+
+<p>```
+选择1，回车，进一步提示安装位置，直接回车，nginx 将安装在默认位置，即/opt/nginx。
+添加nginx启动脚本，参考<a href="http://wiki.nginx.org/Nginx-init-ubuntu">这里</a>。</p></li>
+</ol>
+
+
+<p>```
+$ sudo mv nginx /etc/init.d   # 脚本移动到 /etc/init.d
+$ sudo chmod +x nginx         # 添加执行权限</p>
+
+<p>$ sudo /etc/init.d/nginx start</p>
+
+<h1>* Starting Nginx Server...                   [ OK ]</h1>
+
+<p>$ sudo /etc/init.d/nginx restart</p>
+
+<h1>* Stopping Nginx Server...                   [ OK ]</h1>
+
+<h1>* Starting Nginx Server...                   [ OK ]</h1>
+
+<p>$ sudo /etc/init.d/nginx stop</p>
+
+<h1>* Stopping Nginx Server...                   [ OK ]</h1>
+
+<p>```</p>
+
+<p><strong>nginx的配置</strong></p>
+
+<p>```
+$ sudo vim /opt/nginx/conf/nginx.conf              # 打开配置文件
+......
+http {</p>
+
+<pre><code>passenger_root ～/.rvm/gems/ruby-1.9.3-p194/gems/passenger-3.0.15;
+passenger_ruby ~/.rvm/wrappers/ruby-1.9.3-p194/ruby;
+
+include       mime.types;
+default_type  application/octet-stream;
+ ......
+server {
+    listen 80;                           #端口
+    server_name  localhost;              #域名
+    root ~/www/demo/public;  #项目public路径
+    passenger_enabled on;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>这样就可以访问 http://localhost 了</p>
+
+<h4><strong>安装 mongodb</strong></h4>
+
+<p><code>
+$ sudo apt-get install mongodb
+</code>
+运行</p>
+
+<p><code>
+$ mongo
+MongoDB shell version: 2.0.4
+connecting to: test
+</code></p>
+
+<h4><strong>安装redis</strong></h4>
+
+<p>下载并安装redis
+<code>
+wget http://redis.googlecode.com/files/redis-2.4.16.tar.gz
+tar -zxf redis-2.4.16.tar.gz
+cd redis-2.4.16
+make
+sudo make install
+</code></p>
+
+<h4><strong>安装mysql</strong></h4>
+
+<p><code>
+$ sudo apt-get install mysql-server mysql-client
+</code>
+全都大功告成 ^_^</p>
+
+<p>PS 发现网页被墙了,ubuntu 也跑不了翻墙，Fuck GFW!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu 12.04的安装和配置(一)]]></title>
+    <link href="http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration/"/>
+    <updated>2012-08-26T17:26:00+08:00</updated>
+    <id>http://shooterman.github.io/blog/2012/08/26/ubuntu-12-dot-04-installation-and-configuration</id>
+    <content type="html"><![CDATA[<p> <a href="http://www.ubuntu.com/">Ubuntu 12.04</a> 出来有段时间了，一直没有更新，本想从11.10的系统
+ 直接升级，结果脆生生挂掉了，好多东西拿不出来了。杯具，重装吧！</p>
+
+<p> 主要是 ruby on rails 和它相关联的在 ubuntu 上的安装配置。
+ 包括 <a href="https://rvm.io/">rvm</a> , ruby on rails, Sublime Text,
+ <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
+ <a href="http://www.mongodb.org/">mongodb</a>, <a href="http://redis.io/">redis</a> 的安装，
+ 顺便把 <a href="http://nodejs.org/">Node.js</a> 也装上，当作汇总了。</p>
+
+<h2>安装Ubuntu 12-04</h2>
+
+<p>首先准备好12.04的 iso 镜像，需要先从官网下载，我是把iso文件写入U盘后安装的。
+从10.10以后，用 UltraISO 制作出来的 Ubuntu 启动盘会出现无法启动的现象，有人说 ImageWriter 很靠谱，
+先用了<a href="https://github.com/downloads/openSUSE/kiwi/ImageWriter.exe">ImageWriter</a>，
+不过我的本本提示没有写入权限，所以找到了<a href="https://launchpad.net/win32-image-writer/">另一个版本</a>，
+ 顺利写入。然后插上U盘，重启，设置从U盘启动，基本一路 next，结果手欠，装成E文的系统了。</p>
+
+<h3>安装配置</h3>
+
+<h4><strong>中文输入</strong></h4>
+
+<p>12.04 的中文输入是个大问题， 即使能输入中文，在低版本的 Sublime Text 中也不能输入中文，
+好在 <strong>dev版本在其他输入法下</strong> 已经ok了。</p>
+
+<h4><strong>安装 Ruby On Rails</strong></h4>
+
+<p>先安装一些 ruby on rails 的依赖包，听前辈们的话不会错。</p>
+
+<p><code>
+$ sudo apt-get install -y build-essential openssl curl libcurl3-dev libreadline6 libreadline6-dev git zlib1g zlib1g-dev libssl-dev libyaml-dev libxml2-dev libxslt-dev autoconf automake libtool imagemagick libmagickwand-dev libpcre3-dev libsqlite3-dev
+</code>
+<strong>No.1 安装 RVM</strong><br/>
+<code>
+ $ curl -L get.rvm.io | bash -s stable
+</code>
+ 给 ~/.bashrc (Ubuntu) 加上脚本引用</p>
+
+<p><code>
+  $ echo '[[ -s " HOME/.rvm/scripts/rvm" ]] &amp;&amp; source " HOME/.rvm/scripts/rvm"' &gt;&gt; ~/.bashrc
+</code>
+ 然后，重新载入那个文件</p>
+
+<p><code>
+ $ source ~/.bashrc
+</code>
+测试一下</p>
+
+<p><code>
+$ rvm -v
+rvm 1.15.5 (stable) by Wayne E. Seguin &lt;wayneeseguin@gmail.com&gt;, Michal Papis &lt;mpapis@gmail.com&gt; [https://rvm.io/]
+</code>
+<strong>No.2  用 RVM 安装 Ruby 环境</strong></p>
+
+<p>```
+$ rvm list known #显示可供选择的版本</p>
+
+<p>[ruby-]1.8.6[-p420]
+[ruby-]1.8.7[-p370]
+[ruby-]1.9.1[-p431]
+[ruby-]1.9.2-p180
+[ruby-]1.9.2-p290
+[ruby-]1.9.2-p318
+[ruby-]1.9.2[-p320]
+[ruby-]1.9.2-head
+[ruby-]1.9.3-preview1
+[ruby-]1.9.3-rc1
+[ruby-]1.9.3-p0
+[ruby-]1.9.3-p125
+[ruby-]1.9.3[-p194]
+[ruby-]1.9.3-head
+ruby-head
+......</p>
+
+<h1>要安装1.9.3，直接</h1>
+
+<p>$ rvm install 1.9.3<br/>
+```</p>
+
+<p>.................. 漫长的的等待 ..................</p>
+
+<p>Ruby 装好以后，通过 RVM 将指定版本的 Ruby 设置为系统默认版本</p>
+
+<p><code>
+$ rvm  1.9.3 --default
+</code>
+测试一下</p>
+
+<p><code>
+$ ruby -v
+ruby 1.9.3p194 (2012-04-20 revision 35410) [i686-linux]
+$ gem -v
+1.8.23
+</code>
+<strong>No.3 安装 Rails 环境</strong></p>
+
+<p><code>
+$ gem install bundler rails
+</code>
+测试一下</p>
+
+<p><code>
+$ bundle -v
+Bundler version 1.1.5
+$ rails -v
+Rails 3.2.8
+</code>
+ ruby on rails 的安装齐活了。</p>
+
+<h4><strong>安装 Sublime Text</strong></h4>
+
+<p>由于<strong>输入汉字</strong>原因，安装 Sublime Text 的dev版本，就是比较新的。
+先 google 一下 Sublime Text 的ppa源，好吧，ppa暂且是什么先不管。</p>
+
+<p><code>  
+$ sudo add-apt-repository ppa:webupd8team/sublime-text-2
+$ sudo apt-get update # 更新软件源
+$ sudo apt-get install sublime-text-dev
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>
