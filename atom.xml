@@ -4,7 +4,7 @@
   <title><![CDATA[Shooter's Blog]]></title>
   <link href="http://shooterman.github.io/atom.xml" rel="self"/>
   <link href="http://shooterman.github.io/"/>
-  <updated>2014-01-13T17:14:22+08:00</updated>
+  <updated>2014-01-13T17:51:05+08:00</updated>
   <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
@@ -347,6 +347,155 @@ being redirected to the login form.
 
 <pre><code>gem "resque-scheduler", "~&gt; 2.0.1"  :require =&gt; "resque_scheduler"
 </code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在rails中创建定时任务]]></title>
+    <link href="http://shooterman.github.io/blog/2013/11/06/whenever/"/>
+    <updated>2013-11-06T17:30:26+08:00</updated>
+    <id>http://shooterman.github.io/blog/2013/11/06/whenever</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/javan/whenever">whenever 源码</a></p>
+
+<h3>安装 运行</h3>
+
+<p>1 gem &#8220;whenever&#8221;, &#8220;~> 0.8.4&#8221;</p>
+
+<p>2 在命令行输入 <code>wheneverize .</code></p>
+
+<p>生成config/schedule.rb</p>
+
+<p>3 编写 schedule.rb</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">env</span> <span class="ss">:PATH</span><span class="p">,</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;PATH&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:output</span><span class="p">,</span> <span class="p">{</span><span class="ss">:error</span> <span class="o">=&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Whenever</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;cron_err.log&quot;</span><span class="p">),</span> <span class="ss">:standard</span> <span class="o">=&gt;</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Whenever</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;cron_out.log&quot;</span><span class="p">)}</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:environment</span><span class="p">,</span> <span class="s1">&#39;development&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4 执行</p>
+
+<pre><code>whenever #根据schedule.rb 转换成cron语法, 不会写入crontab文件
+
+whenever --update-crontab #写入crontab文件
+
+whenever -s environment=development -w ~/minsheng/config/schedule.rb
+
+whenever --help
+</code></pre>
+
+<h3>linux crontab 命令</h3>
+
+<pre><code>crontab -l # 列出某个用户cron服务的详细内容
+crontab -e # 修改
+crontab -r # 删除某个用户的cron服务
+</code></pre>
+
+<h3>schedule.rb 示例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">every</span> <span class="mi">3</span><span class="o">.</span><span class="n">hours</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">runner</span> <span class="s2">&quot;MyModel.some_process&quot;</span>
+</span><span class='line'>  <span class="n">rake</span> <span class="s2">&quot;my:rake:task&quot;</span>
+</span><span class='line'>  <span class="n">command</span> <span class="s2">&quot;/usr/bin/my_great_command&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="mi">1</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="ss">:at</span> <span class="o">=&gt;</span> <span class="s1">&#39;4:30 am&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">runner</span> <span class="s2">&quot;MyModel.task_to_run_at_four_thirty_in_the_morning&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="ss">:hour</span> <span class="k">do</span> <span class="c1"># Many shortcuts available: :hour, :day, :month, :year, :reboot</span>
+</span><span class='line'>  <span class="n">runner</span> <span class="s2">&quot;SomeModel.ladeeda&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="ss">:sunday</span><span class="p">,</span> <span class="ss">:at</span> <span class="o">=&gt;</span> <span class="s1">&#39;12pm&#39;</span> <span class="k">do</span> <span class="c1"># Use any day of the week or :weekend, :weekday</span>
+</span><span class='line'>  <span class="n">runner</span> <span class="s2">&quot;Task.do_something_great&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="s1">&#39;0 0 27-31 * *&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">command</span> <span class="s2">&quot;echo &#39;you can use raw cron syntax too&#39;&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># run this task only on servers with the :app role in Capistrano</span>
+</span><span class='line'><span class="c1"># see Capistrano roles section below</span>
+</span><span class='line'><span class="n">every</span> <span class="ss">:day</span><span class="p">,</span> <span class="ss">:at</span> <span class="o">=&gt;</span> <span class="s1">&#39;12:20am&#39;</span><span class="p">,</span> <span class="ss">:roles</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:app</span><span class="o">]</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">rake</span> <span class="s2">&quot;app_server:task&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>定义自己的工作类型</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">job_type</span> <span class="ss">:awesome</span><span class="p">,</span> <span class="s1">&#39;/usr/local/bin/awesome :task :fun_level&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="mi">2</span><span class="o">.</span><span class="n">hours</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">awesome</span> <span class="s2">&quot;party&quot;</span><span class="p">,</span> <span class="ss">:fun_level</span> <span class="o">=&gt;</span> <span class="s2">&quot;extreme&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>whenever 默认的工作类型与定义</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">job_type</span> <span class="ss">:command</span><span class="p">,</span> <span class="s2">&quot;:task :output&quot;</span>
+</span><span class='line'><span class="n">job_type</span> <span class="ss">:rake</span><span class="p">,</span>    <span class="s2">&quot;cd :path &amp;&amp; :environment_variable=:environment bundle exec rake :task --silent :output&quot;</span>
+</span><span class='line'><span class="n">job_type</span> <span class="ss">:runner</span><span class="p">,</span>  <span class="s2">&quot;cd :path &amp;&amp; script/rails runner -e :environment &#39;:task&#39; :output&quot;</span>
+</span><span class='line'><span class="n">job_type</span> <span class="ss">:script</span><span class="p">,</span>  <span class="s2">&quot;cd :path &amp;&amp; :environment_variable=:environment bundle exec script/:task :output&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>RVM 集成</h3>
+
+<p>&#8230;</p>
+
+<h3>Capistrano 集成</h3>
+
+<p>&#8230;</p>
+
+<h3>资料</h3>
+
+<p><a href="http://zh.wikipedia.org/wiki/Cron">What is Cron</a></p>
+
+<p><a href="http://huacnlee.com/blog/create-rails-task-scheduler-by-rake-and-cronjob/">Rake + cronjob 创建计划任务</a></p>
+
+<p><a href="http://railscasts.com/episodes/164-cron-in-ruby">164-cron-in-ruby</a></p>
 ]]></content>
   </entry>
   

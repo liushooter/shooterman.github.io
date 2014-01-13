@@ -512,6 +512,185 @@ being redirected to the login form.
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/11/06/whenever/">在rails中创建定时任务</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-06T17:30:26+08:00" pubdate data-updated="true">2013-11-6</time>
+        
+           | <a href="/blog/2013/11/06/whenever/#disqus_thread"
+             data-disqus-identifier="http://shooterman.github.io/blog/2013/11/06/whenever/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="https://github.com/javan/whenever">whenever 源码</a></p>
+
+<h3>安装 运行</h3>
+
+<p>1 gem &#8220;whenever&#8221;, &#8220;~> 0.8.4&#8221;</p>
+
+<p>2 在命令行输入 <code>wheneverize .</code></p>
+
+<p>生成config/schedule.rb</p>
+
+<p>3 编写 schedule.rb</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">env</span> <span class="ss">:PATH</span><span class="p">,</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;PATH&#39;</span><span class="o">]</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:output</span><span class="p">,</span> <span class="p">{</span><span class="ss">:error</span> <span class="o">=&gt;</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Whenever</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;cron_err.log&quot;</span><span class="p">),</span> <span class="ss">:standard</span> <span class="o">=&gt;</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">Whenever</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="s2">&quot;cron_out.log&quot;</span><span class="p">)}</span>
+</span><span class='line'><span class="n">set</span> <span class="ss">:environment</span><span class="p">,</span> <span class="s1">&#39;development&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4 执行</p>
+
+<pre><code>whenever #根据schedule.rb 转换成cron语法, 不会写入crontab文件
+
+whenever --update-crontab #写入crontab文件
+
+whenever -s environment=development -w ~/minsheng/config/schedule.rb
+
+whenever --help
+</code></pre>
+
+<h3>linux crontab 命令</h3>
+
+<pre><code>crontab -l # 列出某个用户cron服务的详细内容
+crontab -e # 修改
+crontab -r # 删除某个用户的cron服务
+</code></pre>
+
+<h3>schedule.rb 示例</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">every</span> <span class="mi">3</span><span class="o">.</span><span class="n">hours</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">runner</span> <span class="s2">&quot;MyModel.some_process&quot;</span>
+</span><span class='line'>  <span class="n">rake</span> <span class="s2">&quot;my:rake:task&quot;</span>
+</span><span class='line'>  <span class="n">command</span> <span class="s2">&quot;/usr/bin/my_great_command&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="mi">1</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="ss">:at</span> <span class="o">=&gt;</span> <span class="s1">&#39;4:30 am&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">runner</span> <span class="s2">&quot;MyModel.task_to_run_at_four_thirty_in_the_morning&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="ss">:hour</span> <span class="k">do</span> <span class="c1"># Many shortcuts available: :hour, :day, :month, :year, :reboot</span>
+</span><span class='line'>  <span class="n">runner</span> <span class="s2">&quot;SomeModel.ladeeda&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="ss">:sunday</span><span class="p">,</span> <span class="ss">:at</span> <span class="o">=&gt;</span> <span class="s1">&#39;12pm&#39;</span> <span class="k">do</span> <span class="c1"># Use any day of the week or :weekend, :weekday</span>
+</span><span class='line'>  <span class="n">runner</span> <span class="s2">&quot;Task.do_something_great&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="s1">&#39;0 0 27-31 * *&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">command</span> <span class="s2">&quot;echo &#39;you can use raw cron syntax too&#39;&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># run this task only on servers with the :app role in Capistrano</span>
+</span><span class='line'><span class="c1"># see Capistrano roles section below</span>
+</span><span class='line'><span class="n">every</span> <span class="ss">:day</span><span class="p">,</span> <span class="ss">:at</span> <span class="o">=&gt;</span> <span class="s1">&#39;12:20am&#39;</span><span class="p">,</span> <span class="ss">:roles</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:app</span><span class="o">]</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">rake</span> <span class="s2">&quot;app_server:task&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>定义自己的工作类型</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">job_type</span> <span class="ss">:awesome</span><span class="p">,</span> <span class="s1">&#39;/usr/local/bin/awesome :task :fun_level&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">every</span> <span class="mi">2</span><span class="o">.</span><span class="n">hours</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">awesome</span> <span class="s2">&quot;party&quot;</span><span class="p">,</span> <span class="ss">:fun_level</span> <span class="o">=&gt;</span> <span class="s2">&quot;extreme&quot;</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>whenever 默认的工作类型与定义</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">job_type</span> <span class="ss">:command</span><span class="p">,</span> <span class="s2">&quot;:task :output&quot;</span>
+</span><span class='line'><span class="n">job_type</span> <span class="ss">:rake</span><span class="p">,</span>    <span class="s2">&quot;cd :path &amp;&amp; :environment_variable=:environment bundle exec rake :task --silent :output&quot;</span>
+</span><span class='line'><span class="n">job_type</span> <span class="ss">:runner</span><span class="p">,</span>  <span class="s2">&quot;cd :path &amp;&amp; script/rails runner -e :environment &#39;:task&#39; :output&quot;</span>
+</span><span class='line'><span class="n">job_type</span> <span class="ss">:script</span><span class="p">,</span>  <span class="s2">&quot;cd :path &amp;&amp; :environment_variable=:environment bundle exec script/:task :output&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>RVM 集成</h3>
+
+<p>&#8230;</p>
+
+<h3>Capistrano 集成</h3>
+
+<p>&#8230;</p>
+
+<h3>资料</h3>
+
+<p><a href="http://zh.wikipedia.org/wiki/Cron">What is Cron</a></p>
+
+<p><a href="http://huacnlee.com/blog/create-rails-task-scheduler-by-rake-and-cronjob/">Rake + cronjob 创建计划任务</a></p>
+
+<p><a href="http://railscasts.com/episodes/164-cron-in-ruby">164-cron-in-ruby</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a></h1>
     
     
@@ -632,104 +811,6 @@ ruby 环境也没有安装。一番捣鼓，步骤如下:</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/01/01/goodbye-2012-hello-2013/">再见2012, 你好2013</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-01T16:43:00+08:00" pubdate data-updated="true">2013-1-1</time>
-        
-           | <a href="/blog/2013/01/01/goodbye-2012-hello-2013/#disqus_thread"
-             data-disqus-identifier="http://shooterman.github.io/blog/2013/01/01/goodbye-2012-hello-2013/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>当我还在2011憧憬2012的时候，它走到了末尾，迎来了2013，时间走的好快。</p>
-
-<p><del>说好的末日没有来，爱情也木来 </del></p>
-
-<p>换了新的工作，换了新的同事。</p>
-
-<p>自从11年11月份接触ruby，至今也有1年多了。感觉进步不是很快，一直是一个人摸爬滚打，
-没有真正的引路人。</p>
-
-<h2>To Do List</h2>
-
-<h3>Rails</h3>
-
-<p>Rails测试框架
-基本定性在已 RSpec+factory_girl为基础的测试框架，以后逐步添加其他gem。
-测试效率，覆盖率，自动程度，学习难度，这几个方面考虑。</p>
-
-<h3>Git</h3>
-
-<p>这么潮的版本控制工具，不用实在不是我性格。
-等比对了Git跟svn的优缺点，我就要转型了。</p>
-
-<h3>论坛</h3>
-
-<p>计划推迟了很长时间</p>
-
-<h3>提高英语水平</h3>
-
-<p>感觉我的水平就停留在了初中人教版，看这么多文档，费时费力，懂英语会走的更远。</p>
-
-<h3>Python</h3>
-
-<p>python算是ruby的兄弟语言。虽没有ruby那么灵活，但运行速度快，跨平台性好。
-GUI方面比ruby强了很多。java语法太琐碎了，概念性的东西一大堆。</p>
-
-<h3>mac mini</h3>
-
-<p>虽然在ubuntu基本可以胜任，但在GUI方面还是mac支持的不错。
-公司也不提供工作的电脑，整天扛着笔记本挤地铁，有些痛苦。
-到时候可以研究下ios，当作副业，开发个app，弄点小钱也不错。</p>
-
-<h3>ruby on arduino</h3>
-
-<p>看见别人分享的ppt，感觉很新奇，很潮。
-软件跟硬件打交道，这是最能直观体现软件价值功能的地方了。</p>
-
-<p>arduino在<a href="http://arduino.tw/">tw</a>很火。</p>
-
-<p><a href="http://zh.wikipedia.org/wiki/Arduino">中文wiki</a></p>
-
-<p><a href="http://www.arduino.cc/">arduino官网</a></p>
-
-<h3>最后  多赚钱，money才是王道啊。</h3>
-
-<p>PS: 这本想在13年1月1日发出来的，竟然拖到了 13年12月21日。</p>
-
-<p>补录:</p>
-
-<p>昨天(12-20)外祖父突然去世，我的blog也能用了，这是偶然么?
-愿您安息</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -757,11 +838,11 @@ GUI方面比ruby强了很多。java语法太琐碎了，概念性的东西一大
       </li>
     
       <li class="post">
-        <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a>
+        <a href="/blog/2013/11/06/whenever/">在rails中创建定时任务</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/01/01/goodbye-2012-hello-2013/">再见2012, 你好2013</a>
+        <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a>
       </li>
     
   </ul>
