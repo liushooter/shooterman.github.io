@@ -4,7 +4,7 @@
   <title><![CDATA[Shooter's Blog]]></title>
   <link href="http://shooterman.github.io/atom.xml" rel="self"/>
   <link href="http://shooterman.github.io/"/>
-  <updated>2014-01-13T18:11:10+08:00</updated>
+  <updated>2014-01-15T22:48:32+08:00</updated>
   <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
@@ -12,6 +12,1002 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails 页面最佳实践]]></title>
+    <link href="http://shooterman.github.io/blog/2014/01/15/rails-view-best-practices/"/>
+    <updated>2014-01-15T22:18:18+08:00</updated>
+    <id>http://shooterman.github.io/blog/2014/01/15/rails-view-best-practices</id>
+    <content type="html"><![CDATA[<h2>什么是好的 view</h2>
+
+<h3>为什么需要最佳实践？</h3>
+
+<ul>
+<li>项目太大，难懂</li>
+<li>团队编程风格不同</li>
+</ul>
+
+
+<h3>你的 View 可能正面临的问题</h3>
+
+<ul>
+<li>Complex UI with logic UI 和代码逻辑纠缠在一起</li>
+<li>Too long to maintain 代码太长难以维护</li>
+<li>Low performance 性能不好</li>
+<li>Security issues 容易产生安全问题</li>
+</ul>
+
+
+<h3>什么是好的代码</h3>
+
+<ul>
+<li>Readability 易读，容易了解</li>
+<li>Flexibility 弹性，容易扩充</li>
+<li>Effective 效率，写码快速</li>
+<li>Maintainability 维护性，容易找到问题</li>
+<li>Consistency 一致性，遵循管理无须死背</li>
+<li>Testability 可测行，容易编写测试</li>
+</ul>
+
+
+<h2>18招技巧</h2>
+
+<h3>No.1 Move logic to helper</h3>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">current_user</span> <span class="o">&amp;&amp;</span> <span class="n">current_user</span> <span class="o">==</span> <span class="n">post</span><span class="o">.</span><span class="n">user</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">link_to</span><span class="p">(</span><span class="s2">&quot;Edit&quot;</span><span class="p">,</span> <span class="n">edit_post_path</span><span class="p">(</span><span class="n">post</span><span class="p">))</span><span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">editable?</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">link_to</span><span class="p">(</span><span class="s2">&quot;Edit&quot;</span><span class="p">,</span> <span class="n">edit_post_path</span><span class="p">(</span><span class="n">post</span><span class="p">))</span><span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.2 Pre-decorate with Helper</h3>
+
+<p>经常用的地方先用 helper 整理</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="vi">@topic</span><span class="o">.</span><span class="n">content</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">auto_link</span><span class="p">(</span><span class="n">truncate</span><span class="p">(</span><span class="n">simple_format</span><span class="p">(</span><span class="n">topic</span><span class="o">.</span><span class="n">content</span><span class="p">)),</span> <span class="ss">:length</span> <span class="o">=&gt;</span> <span class="mi">100</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">editable?</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">link_to</span><span class="p">(</span><span class="s2">&quot;Edit&quot;</span><span class="p">,</span> <span class="n">edit_post_path</span><span class="p">(</span><span class="n">post</span><span class="p">))</span><span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Common Case</p>
+
+<ul>
+<li>render_post_author</li>
+<li>render_post_published_date</li>
+<li>render_post_title</li>
+<li>render_post_content</li>
+</ul>
+
+
+<h3>No.3 Use Ruby in Helper ALL THE TIME</h3>
+
+<p>在 Helper 中只使用 Ruby 代码，而不要混杂 HTML。因为如果在 Helper 中最后调用 <strong>raw</strong> 或者 <strong>html_safe</strong> 会让代码有被 javascript 攻击的危险</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_post_taglist</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>  <span class="c1"># ....</span>
+</span><span class='line'>   <span class="n">raw</span> <span class="n">tags</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">tag</span><span class="o">|</span>  <span class="s2">&quot;&lt;a href=</span><span class="se">\&quot;</span><span class="si">#{</span><span class="n">posts_path</span><span class="p">(</span><span class="ss">:tag</span> <span class="o">=&gt;</span> <span class="n">tag</span><span class="p">)</span><span class="si">}</span><span class="se">\&quot;</span><span class="s2"> class=</span><span class="se">\&quot;</span><span class="s2">tag</span><span class="se">\&quot;</span><span class="s2">&gt;</span><span class="si">#{</span><span class="n">tag</span><span class="si">}</span><span class="s2">&lt;/a&gt;&quot;</span> <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_post_taglist</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'><span class="c1"># ...</span>
+</span><span class='line'>  <span class="n">raw</span> <span class="n">tags</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">tag</span><span class="o">|</span> <span class="n">link_to</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span><span class="n">posts_path</span><span class="p">(</span><span class="ss">:tag</span> <span class="o">=&gt;</span> <span class="n">tag</span><span class="p">))</span> <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.4 mix Helper &amp; Partial</h3>
+
+<p>在 Helper 中可以混合使用 Partial</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_post_title</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">str</span> <span class="o">=</span> <span class="err">“”</span>
+</span><span class='line'>  <span class="n">str</span> <span class="o">+=</span> <span class="err">“</span><span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="err">”</span>
+</span><span class='line'>  <span class="n">str</span> <span class="o">+=</span> <span class="n">link_to</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">post_path</span><span class="p">(</span><span class="n">post</span><span class="p">))</span>
+</span><span class='line'>  <span class="n">str</span> <span class="o">+=</span> <span class="err">“</span><span class="o">&lt;</span><span class="sr">/li&gt;”</span>
+</span><span class='line'><span class="sr">  return raw(str)</span>
+</span><span class='line'><span class="sr">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_post_title</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">render</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="s2">&quot;posts/title_for_helper&quot;</span><span class="p">,</span> <span class="ss">:locals</span> <span class="o">=&gt;</span>
+</span><span class='line'><span class="p">{</span> <span class="ss">:title</span> <span class="o">=&gt;</span> <span class="n">post</span><span class="o">.</span><span class="n">title</span> <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.5 Tell, Don’t ask</h3>
+
+<p>先 Query 再传入 Helper。这样可以避免效能低下的问题。</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_post_taglist</span><span class="p">(</span><span class="n">post</span><span class="p">,</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>  <span class="n">tags</span> <span class="o">=</span> <span class="n">post</span><span class="o">.</span><span class="n">tags</span>
+</span><span class='line'>  <span class="n">tags</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">tag</span><span class="o">|</span> <span class="n">link_to</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">posts_path</span><span class="p">(</span><span class="ss">tag</span><span class="p">:</span> <span class="n">tag</span><span class="p">))</span> <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="vi">@posts</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">render_post_taglist</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_post_taglist</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">opts</span> <span class="o">=</span> <span class="p">{})</span>
+</span><span class='line'>  <span class="n">tags</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span> <span class="o">|</span><span class="n">tag</span><span class="o">|</span> <span class="n">link_to</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">posts_path</span><span class="p">(</span><span class="ss">tag</span><span class="p">:</span> <span class="n">tag</span><span class="p">))</span> <span class="p">}</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="vi">@posts</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">post</span><span class="o">|</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%=</span> <span class="n">render_post_taglist</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'>
+</span><span class='line'><span class="x">def index</span>
+</span><span class='line'><span class="x">  @posts = Post.recent.includes(:tags)</span>
+</span><span class='line'><span class="x">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.6 Wrap into a method</h3>
+
+<p>属性尽量包装成 method 而不是放在 helper 中</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_comment_author</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">comment</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>    <span class="n">comment</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="n">comment</span><span class="o">.</span><span class="n">custom_name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_comment_author</span><span class="p">(</span><span class="n">comment</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">comment</span><span class="o">.</span><span class="n">author_name</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Comment</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">author_name</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">present?</span>
+</span><span class='line'>      <span class="n">user</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="n">custom_name</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.7 Move code to Partial</h3>
+
+<p>view code 超过两页请注意</p>
+
+<ul>
+<li>highly duplicated 内容高度重复</li>
+<li>independent blocks 可以独立作为功能区块</li>
+</ul>
+
+
+<p>Common Case</p>
+
+<ul>
+<li>nav/user_info</li>
+<li>nav/admin_menu</li>
+<li>vendor_js/google_analytics</li>
+<li>vendor_js/disqus_js</li>
+<li>global/footer</li>
+</ul>
+
+
+<h3>No.8 Use presenter to clean the view</h3>
+
+<p>使⽤ Presenter 解決 login in view 问题</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="k">if</span> <span class="n">user_rofile</span><span class="o">.</span><span class="n">has_experience?</span> <span class="o">&amp;&amp;</span> <span class="n">user_rofile</span><span class="o">.</span><span class="n">experience_public?</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  &lt;p&gt;&lt;strong&gt;Experience:&lt;/strong&gt; </span><span class="cp">&lt;%=</span> <span class="n">user_profile</span><span class="o">.</span><span class="n">experience</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="n">user_profile</span><span class="o">.</span><span class="n">with_experience</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  &lt;p&gt;&lt;strong&gt;Experience:&lt;/strong&gt; </span><span class="cp">&lt;%=</span> <span class="n">user_profile</span><span class="o">.</span><span class="n">experience</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="n">user_profile</span><span class="o">.</span><span class="n">with_hobbies</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  &lt;p&gt;&lt;strong&gt;Hobbies:&lt;strong&gt; </span><span class="cp">&lt;%=</span> <span class="n">user_profile</span><span class="o">.</span><span class="n">hobbies</span> <span class="cp">%&gt;</span><span class="x">&lt;/p&gt;</span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ProfilePresenter</span> <span class="o">&lt;</span> <span class="o">::</span><span class="no">Presenter</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">with_experience</span><span class="p">(</span><span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">has_experience?</span> <span class="o">&amp;&amp;</span> <span class="n">profile</span><span class="o">.</span><span class="n">experience_public?</span>
+</span><span class='line'>      <span class="n">block</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">view</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>关于 presenter 的延伸阅读</strong></p>
+
+<ul>
+<li><a href="http://mikepackdev.com/blog_posts/31-exhibit-vs-presenter">Exhibit vs Presenter</a></li>
+<li><a href="http://stackoverflow.com/questions/15212637/using-presenters-in-rails">Using Presenters in rails</a></li>
+<li><a href="http://railscasts.com/episodes/287-presenters-from-scratch">Presenters from Scratch</a></li>
+<li><a href="http://blog.jayfields.com/2007/03/rails-presenter-pattern.html">Rails: Presenter Pattern</a></li>
+<li><a href="http://new-bamboo.co.uk/blog/2013/04/17/rails-presenters-skinny-everything">Rails Presenters – Skinny Everything</a></li>
+</ul>
+
+
+<h3>No.9 Cache Digest</h3>
+
+<p>过去的页面缓存，我们需要自己管理版本，很难维护。新的 digest 缓存策略会自动失效。</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="o">[</span><span class="n">v15</span><span class="p">,</span><span class="vi">@project</span><span class="o">]</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  aaa</span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="o">[</span><span class="n">v10</span><span class="p">,</span><span class="vi">@todo</span><span class="o">]</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">    bbb</span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="o">[</span><span class="n">v45</span><span class="p">,</span><span class="vi">@todolist</span><span class="o">]</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">      zzz</span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x">    </span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="o">%</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="vi">@project</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  aaa</span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="vi">@todo</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">    bbb</span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="vi">@todolist</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">      ccc</span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>关于 Cache Digest 的延伸阅读</strong></p>
+
+<ul>
+<li><a href="https://github.com/rails/cache_digests">cache_digests on github</a></li>
+<li><a href="http://railscasts.com/episodes/387-cache-digests">Cache Digests</a></li>
+</ul>
+
+
+<h3>No.10 Cells</h3>
+
+<p>当同一个页面含有多个 Tab ，它会造成如下问题：</p>
+
+<ul>
+<li>Controller code 特别长，因为需要取出很多不同数据存入的变量</li>
+<li>在 controller &amp; view 有性能问题不好找到</li>
+<li>很难设置 action 级别的缓存</li>
+</ul>
+
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@recent_posts</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">recent_posts</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@favorite_posts</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">favorite_posts</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@recent_comments</span> <span class="o">=</span> <span class="vi">@user</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="s2">&quot;users/recent_post&quot;</span><span class="p">,</span> <span class="ss">:collection</span> <span class="o">=&gt;</span> <span class="vi">@recent_posts</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="s2">&quot;users/favorite_post&quot;</span><span class="p">,</span> <span class="ss">:collection</span> <span class="o">=&gt;</span> <span class="vi">@favorite_posts</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="s2">&quot;users/recent_comment&quot;</span><span class="p">,</span> <span class="ss">:collection</span> <span class="o">=&gt;</span> <span class="vi">@recent_comments</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">render_cell</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:rencent_posts</span><span class="p">,</span> <span class="ss">:user</span> <span class="o">=&gt;</span> <span class="vi">@user</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">render_cell</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:favorite_posts</span><span class="p">,</span> <span class="ss">:user</span> <span class="o">=&gt;</span> <span class="vi">@user</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">render_cell</span> <span class="ss">:user</span><span class="p">,</span> <span class="ss">:recent_comments</span><span class="p">,</span> <span class="ss">:user</span> <span class="o">=&gt;</span> <span class="vi">@user</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UsersController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>    <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">UserCell</span> <span class="o">&lt;</span> <span class="ss">Cell</span><span class="p">:</span><span class="ss">:Rails</span>
+</span><span class='line'>  <span class="n">cache</span> <span class="ss">:recent_posts</span><span class="p">,</span> <span class="ss">:expires_in</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="o">.</span><span class="n">hours</span>
+</span><span class='line'>  <span class="n">cache</span> <span class="ss">:favorite_posts</span><span class="p">,</span> <span class="ss">:expires_in</span> <span class="o">=&gt;</span> <span class="mi">3</span><span class="o">.</span><span class="n">hours</span>
+</span><span class='line'>  <span class="n">cache</span> <span class="ss">:recent_comments</span><span class="p">,</span> <span class="ss">:expires_in</span> <span class="o">=&gt;</span> <span class="mi">5</span><span class="o">.</span><span class="n">hours</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">recent_posts</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>   <span class="c1">#...</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">favorite_posts</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#...</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">recent_comments</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1">#...</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>关于 Cells 的延伸阅读</strong></p>
+
+<ul>
+<li><a href="https://github.com/apotonick/cells">cells on github</a></li>
+</ul>
+
+
+<h3>No.11 content_for / yield</h3>
+
+<p>根据 Yahoo 大神的建议，应该把 javascript 和 css 代码放在页面的最下面。以便加快加载，但是会造成一些问题。比如你自定义的 js 代码比 jquery 库更早加载，以至于无法运行你的代码。</p>
+
+<p>例子1:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;!-- application.html.erb --&gt;</span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">stylesheet_link_tag</span> <span class="s2">&quot;application&quot;</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">javascript_include_tag</span> <span class="s2">&quot;application&quot;</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="ss">:page_specific_javascript</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'>
+</span><span class='line'><span class="x">&lt;!-- main.html.erb --&gt;</span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">content_for</span> <span class="ss">:page_specific_javascript</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  &lt;script type= &quot;text/javascript&quot;&gt;</span>
+</span><span class='line'><span class="x">    your script here</span>
+</span><span class='line'><span class="x">  &lt;/script&gt;</span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子2:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;!-- application.html.erb --&gt;</span>
+</span><span class='line'><span class="x">&lt;div class=&quot;main&quot;&gt;</span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">&lt;/div&gt;</span>
+</span><span class='line'><span class="x">&lt;div class=&quot;sidebar&quot;&gt;</span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="k">yield</span> <span class="ss">:sidebar</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">&lt;/div&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="x">&lt;!-- main.html.erb --&gt;</span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">content_for</span> <span class="ss">:sidebar</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">render</span> <span class="s2">&quot;ad/foo&quot;</span><span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.12 Decoration in Controller</h3>
+
+<p>有个别情况，可以把一些代码放在 controller 中</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">content_for</span> <span class="ss">:meta</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  &lt;meta content=&quot;xdite&#39;s blog&quot; name=&quot;description&quot;&gt;</span>
+</span><span class='line'><span class="x">  &lt;meta content=&quot;Blog.XDite.net&quot; property=&quot;og:title&quot;&gt;</span>
+</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@blog</span> <span class="o">=</span> <span class="n">current_blog</span>
+</span><span class='line'>  <span class="n">drop_blog_title</span> <span class="vi">@blog</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>  <span class="n">drop_blog_descption</span> <span class="vi">@blog</span><span class="o">.</span><span class="n">description</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">stylesheet_tag</span> <span class="s2">&quot;application&quot;</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">render_page_title</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="cp">&lt;%=</span> <span class="n">render_page_descrption</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.13 Decoration using I18n</h3>
+
+<p>善用 I18n 也可以帮你减少一部分 View 代码</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_user_geneder</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">gender</span> <span class="o">==</span> <span class="s2">&quot;male&quot;</span>
+</span><span class='line'>    <span class="s2">&quot;男 (Male)&quot;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="s2">&quot;⼥女 (Female)&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_user_gender</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+</span><span class='line'>  <span class="no">I18n</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="s2">&quot;users.gender_desc.</span><span class="si">#{</span><span class="n">user</span><span class="o">.</span><span class="n">geneder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.14 Decoration using Decorator</h3>
+
+<p>不要把所有代码都往 Model 中扔，下面的代码演示了一种情况，你需要格式化一种显示发布时间的方法</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1"># first helper</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">render_article_publish_status</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">article</span><span class="o">.</span><span class="n">published?</span>
+</span><span class='line'>    <span class="s2">&quot;Published at </span><span class="si">#{</span><span class="n">article</span><span class="o">.</span><span class="n">published_at</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%A, %B %e&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="s2">&quot;Unpublished&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># then model method</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">human_publish_status</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">published?</span>
+</span><span class='line'>      <span class="s2">&quot;Published at </span><span class="si">#{</span><span class="n">article</span><span class="o">.</span><span class="n">published_at</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%A, %B %e&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Unpublished&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># then ...</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">human_publish_status</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">human_publish_time</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">human_author_name</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="c1">#........</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># at last</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">HumanArticleAttributes</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>下面的代码演示使用 https://github.com/drapergem/draper 之后</p>
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="o">.</span><span class="n">publication_status</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ArticleDecorator</span> <span class="o">&lt;</span> <span class="ss">Draper</span><span class="p">:</span><span class="ss">:Decorator</span>
+</span><span class='line'>  <span class="n">delegate_all</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">publication_status</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">published?</span>
+</span><span class='line'>      <span class="s2">&quot;Published at </span><span class="si">#{</span><span class="n">published_at</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="s2">&quot;Unpublished&quot;</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">published_at</span>
+</span><span class='line'>    <span class="n">object</span><span class="o">.</span><span class="n">published_at</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%A, %B %e&quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="vi">@article</span> <span class="o">=</span> <span class="no">Article</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">decorate</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>关于 draper 的延伸阅读</strong></p>
+
+<ul>
+<li><a href="https://github.com/drapergem/draper">draper on github</a></li>
+<li><a href="https://www.ruby-toolbox.com/categories/rails_presenters">rails_presenters gems</a></li>
+</ul>
+
+
+<h3>No.15 Decoration using View Object</h3>
+
+<p>有时候，我们希望在用户中，不列出我自己</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;dl class=&quot;event-detail&quot;&gt;</span>
+</span><span class='line'><span class="x">  &lt;dt&gt;Event Host&lt;/dt&gt;</span>
+</span><span class='line'><span class="x">  &lt;dd&gt;</span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="k">if</span> <span class="vi">@event</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="n">current_user</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">      You</span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="k">else</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">      </span><span class="cp">&lt;%=</span> <span class="vi">@event</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">name</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  &lt;/dd&gt;</span>
+</span><span class='line'><span class="x">  &lt;dt&gt;Participants&lt;/dt&gt;</span>
+</span><span class='line'><span class="x">  &lt;dd&gt;</span>
+</span><span class='line'><span class="x">    </span><span class="cp">&lt;%=</span> <span class="vi">@event</span><span class="o">.</span><span class="n">participants</span><span class="o">.</span><span class="n">reject</span> <span class="p">{</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span> <span class="nb">p</span> <span class="o">==</span> <span class="n">current_user</span> <span class="p">}</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:name</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">  &lt;/dd&gt;</span>
+</span><span class='line'><span class="x">&lt;/dl&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>GOOD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">EventDetailView</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">current_user</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@template</span> <span class="o">=</span> <span class="n">template</span>
+</span><span class='line'>    <span class="vi">@event</span> <span class="o">=</span> <span class="n">event</span>
+</span><span class='line'>    <span class="vi">@current_user</span> <span class="o">=</span> <span class="n">current_user</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">host</span>
+</span><span class='line'>    <span class="k">if</span> <span class="vi">@event</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="vi">@current_user</span>
+</span><span class='line'>      <span class="s2">&quot;You&quot;</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>      <span class="vi">@event</span><span class="o">.</span><span class="n">host</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">participant_names</span>
+</span><span class='line'>    <span class="n">participants</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">&amp;</span><span class="ss">:name</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">participants</span>
+</span><span class='line'>    <span class="vi">@event</span><span class="o">.</span><span class="n">participants</span><span class="o">.</span><span class="n">reject</span> <span class="p">{</span> <span class="o">|</span><span class="nb">p</span><span class="o">|</span> <span class="nb">p</span> <span class="o">==</span> <span class="vi">@current_user</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">&lt;dl class=&quot;event-detail&quot;&gt;</span>
+</span><span class='line'><span class="x">  &lt;dt&gt;Host&lt;/dt&gt;</span>
+</span><span class='line'><span class="x">  &lt;dd&gt;</span><span class="cp">&lt;%=</span> <span class="n">event_detail</span><span class="o">.</span><span class="n">host</span> <span class="cp">%&gt;</span><span class="x">&lt;/dd&gt;</span>
+</span><span class='line'><span class="x">  &lt;dt&gt;Participants&lt;/dt&gt;</span>
+</span><span class='line'><span class="x">  &lt;dd&gt;</span><span class="cp">&lt;%=</span> <span class="n">event_detail</span><span class="o">.</span><span class="n">participant_names</span> <span class="cp">%&gt;</span><span class="x">&lt;/dd&gt;</span>
+</span><span class='line'><span class="x">&lt;/dl&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>No.16 Form builder</h3>
+
+<ul>
+<li>simple_form</li>
+<li>bootstrap_form</li>
+</ul>
+
+
+<h3>No.17 Form Object</h3>
+
+<p>在 FORM 中包装逻辑，而不是 model 或 controller。比如我们经常遇到的一个情况，只有同意某某条款才能继续注册表单。</p>
+
+<p><strong>Reform</strong> Decouples your models from form validation, presentation and workflows.</p>
+
+<p>https://github.com/apotonick/reform</p>
+
+<h3>No.18 Policy Object / Rule Engine</h3>
+
+<p>权限控制</p>
+
+<p>BAD:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_post_edit_option</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="n">post</span><span class="o">.</span><span class="n">user</span> <span class="o">==</span> <span class="n">current_user</span> <span class="o">||</span> <span class="n">current_user</span><span class="o">.</span><span class="n">admin?</span>
+</span><span class='line'>    <span class="n">render</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="s2">&quot;post/edit_bar&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>针对于这种情况建议使用权限控制系统，另外近来似乎大家都从 Cancan 转移到 Pundit 去了</p>
+
+<p><strong>Pundit</strong> Minimal authorization through OO design and pure Ruby classes</p>
+
+<p>https://github.com/elabs/pundit</p>
+
+<p><strong>Cancan</strong> Authorization Gem for Ruby on Rails</p>
+
+<p>https://github.com/ryanb/cancan</p>
+
+<h2>总结</h2>
+
+<ul>
+<li>总是假设这块正在实现的功能代码需要 decorated（修饰）</li>
+<li>把逻辑移到 methods/classes</li>
+<li>避免在 View/Helper 中做数据库查询</li>
+<li>当代码很难懂的时候，把它抽取到一个新的控制中心比如：form object, Policy Object 之类的</li>
+</ul>
+
+
+<h2>延伸阅读</h2>
+
+<ul>
+<li>http://blog.xdite.net</li>
+<li>https://github.com/bloudermilk/maintainable_templates http://pivotallabs.com/form-backing-objects-for-fun-and-profit/</li>
+<li>http://saturnflyer.com/blog/jim/2013/10/21/how-to-make-your-code-imply-responsibilities/</li>
+<li>http://objectsonrails.com/</li>
+</ul>
+
+
+<h2>出处</h2>
+
+<p>以上内容由 <strong>Victor</strong> 整理，本人只是记录在blog中。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2013年年终总结]]></title>

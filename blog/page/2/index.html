@@ -9,8 +9,8 @@
   <meta name="author" content="shooter">
 
   
-  <meta name="description" content="当我还在2011憧憬2012的时候，它走到了末尾，迎来了2013，时间走的好快。 说好的末日没有来，爱情也木来 换了新的工作，换了新的同事。 自从11年11月份接触ruby，至今也有1年多了。感觉进步不是很快，一直是一个人摸爬滚打，
-没有真正的引路人。 To Do List Rails &hellip;">
+  <meta name="description" content="遇到了这么个小问题，需要把完成的railsApp打包到CentOS上，而且服务器不能联网，
+ruby 环境也没有安装。一番捣鼓，步骤如下: 没有找到离线安装rvm的方法 而且 linux版本为CentOS 5.6 下载源文件 ruby-1.9.3-p327 yaml-0.1.4.tar.gz &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,131 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-03T15:43:00+08:00" pubdate data-updated="true">2013-1-3</time>
+        
+           | <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/#disqus_thread"
+             data-disqus-identifier="http://shooterman.github.io/blog/2013/01/03/centos-offline-install-ruby-environment/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>遇到了这么个小问题，需要把完成的railsApp打包到CentOS上，而且服务器不能联网，
+ruby 环境也没有安装。一番捣鼓，步骤如下:</p>
+
+<p><strong>没有找到离线安装rvm的方法 而且 linux版本为CentOS 5.6</strong></p>
+
+<h3>下载源文件</h3>
+
+<p><a href="http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p327.tar.gz">ruby-1.9.3-p327</a></p>
+
+<p><a href="http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz">yaml-0.1.4.tar.gz</a></p>
+
+<p><a href="http://rubygems.org/downloads/bundler-1.2.3.gem">bundler-1.2.3</a></p>
+
+<h3>本地服务器</h3>
+
+<h4>打包 rails app</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ bundle package
+</span><span class='line'>#若提示没有,安装bundler并重复以上步骤
+</span><span class='line'>$ gem install bundler
+</span><span class='line'>$ bundle package # 将项目所需要的gem复制到 vendor/cache
+</span><span class='line'>$ tar -czf   railsApp.tar.gz   railsApp #压缩打包</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h3>远程服务器</h3>
+
+<h4><strong>首先安装 yaml-0.1.4.tar.gz，再安装ruby</strong></h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ tar –xzvf  yaml-0.1.4.tar.gz
+</span><span class='line'>$ ./configure
+</span><span class='line'>$ make
+</span><span class='line'>$ make install</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装ruby</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ tar  -xzvf  ruby-1.9.3-p327.tar.gz
+</span><span class='line'>$ cd ruby-1.9.3-p327
+</span><span class='line'>$ ./configure
+</span><span class='line'>$ make
+</span><span class='line'>$ make install
+</span><span class='line'>$ ruby -v   #提示即安装成功
+</span><span class='line'>$ gem -v    #gem已经安装</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>本地安装bundler</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem install  bundler-1.2.3.gem
+</span><span class='line'>$ bundle -v  #提示即安装成功</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>部署 rails app</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$ tar  -xzvf  railsApp.tar.gz
+</span><span class='line'>$ cd railsApp
+</span><span class='line'>$ bundle install --local  #本地安装gem</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>注意修改配置文件</strong></p>
+
+<pre><code>$ rails s  #测试运行
+</code></pre>
+
+<p> <a href="https://gist.github.com/4274057">分享在gist上</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -664,210 +789,6 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/">Ubuntu 12.04的安装和配置(二)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-08-27T20:12:00+08:00" pubdate data-updated="true">2012-8-27</time>
-        
-           | <a href="/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/#disqus_thread"
-             data-disqus-identifier="http://shooterman.github.io/blog/2012/08/27/ubuntu-12-dot-04-installation-and-configuration/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>上一篇坑挖了一半，今天一定要把坑挖好。</p>
-
-<p>继续 <a href="http://www.modrails.com/">passenger</a>, <a href="http://wiki.nginx.org/Main">nginx</a>,
- <a href="http://www.mongodb.org/">mongodb</a>, <a href="http://redis.io/">redis</a>,
- <a href="http://nodejs.org/">Node.js</a>  的安装。</p>
-
-<h4><strong>安装Node.js</strong></h4>
-
-<p>配置好ruby on rails 环境后，创建一个rails 项目</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ rails new demo
-</span><span class='line'> ……
-</span><span class='line'>$ cd demo
-</span><span class='line'>$ rails s</span></code></pre></td></tr></table></div></figure>
-
-
-<p>一般会提示这样的错误，<code>Could not find a JavaScript runtime ...</code>，
-具体请移步 <a href="http://stackoverflow.com/questions/8059332/could-not-find-a-javascript-runtime-see-https-github-com-sstephenson-execjs-f">stackoverflow</a></p>
-
-<p>在ubuntu环境下，安装node.js即可</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo apt-get install nodejs</span></code></pre></td></tr></table></div></figure>
-
-
-<p>完成后再次运行项目</p>
-
-<h4><strong>安装passenger和nginx</strong></h4>
-
-<p>安装passenger</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ gem install passenger</span></code></pre></td></tr></table></div></figure>
-
-
-<p>
-安装passenger的nginx模块，nginx一并安装，需要root，我们可以用rvmsudo</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rvmsudo passenger-install-nginx-module
-</span><span class='line'># 提示哪种安装模式
-</span><span class='line'>
-</span><span class='line'>1. Yes: download, compile and install Nginx for me. (recommended)
-</span><span class='line'> # 完全安装
-</span><span class='line'> 
-</span><span class='line'>2. No: I want to customize my Nginx installation. (for advanced users)
-</span><span class='line'> # 自定义安装</span></code></pre></td></tr></table></div></figure>
-
-
-<p>选择1，回车，进一步提示安装位置，直接回车，nginx 将安装在默认位置，即/opt/nginx。
-添加nginx启动脚本，参考<a href="http://wiki.nginx.org/Nginx-init-ubuntu">这里</a>。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo mv nginx /etc/init.d   # 脚本移动到 /etc/init.d
-</span><span class='line'>$ sudo chmod +x nginx         # 添加执行权限
-</span><span class='line'>
-</span><span class='line'>$ sudo /etc/init.d/nginx start
-</span><span class='line'># * Starting Nginx Server...                   [ OK ]
-</span><span class='line'>
-</span><span class='line'>$ sudo /etc/init.d/nginx restart
-</span><span class='line'># * Stopping Nginx Server...                   [ OK ]
-</span><span class='line'># * Starting Nginx Server...                   [ OK ]
-</span><span class='line'>
-</span><span class='line'>$ sudo /etc/init.d/nginx stop
-</span><span class='line'># * Stopping Nginx Server...                   [ OK ]</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>nginx的配置</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo vim /opt/nginx/conf/nginx.conf              # 打开配置文件
-</span><span class='line'>......
-</span><span class='line'>http {
-</span><span class='line'>    passenger_root ～/.rvm/gems/ruby-1.9.3-p194/gems/passenger-3.0.15;
-</span><span class='line'>    passenger_ruby ~/.rvm/wrappers/ruby-1.9.3-p194/ruby;
-</span><span class='line'>
-</span><span class='line'>    include       mime.types;
-</span><span class='line'>    default_type  application/octet-stream;
-</span><span class='line'>     ......
-</span><span class='line'>    server {
-</span><span class='line'>        listen 80;                           #端口
-</span><span class='line'>        server_name  localhost;              #域名
-</span><span class='line'>        root ~/www/demo/public;  #项目public路径
-</span><span class='line'>        passenger_enabled on;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这样就可以访问 http://localhost 了</p>
-
-<h4><strong>安装 mongodb</strong></h4>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo apt-get install mongodb</span></code></pre></td></tr></table></div></figure>
-
-
-<p>运行</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ mongo
-</span><span class='line'>MongoDB shell version: 2.0.4
-</span><span class='line'>connecting to: test</span></code></pre></td></tr></table></div></figure>
-
-
-<h4><strong>安装redis</strong></h4>
-
-<p>下载并安装redis</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>wget http://redis.googlecode.com/files/redis-2.4.16.tar.gz
-</span><span class='line'>tar -zxf redis-2.4.16.tar.gz
-</span><span class='line'>cd redis-2.4.16 
-</span><span class='line'>make 
-</span><span class='line'>sudo make install</span></code></pre></td></tr></table></div></figure>
-
-
-<h4><strong>安装mysql</strong></h4>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$ sudo apt-get install mysql-server mysql-client</span></code></pre></td></tr></table></div></figure>
-
-
-<p>全都大功告成 ^_^</p>
-
-<p>PS 发现网页被墙了,ubuntu 也跑不了翻墙，Fuck GFW!</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -885,6 +806,10 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/15/rails-view-best-practices/">Rails 页面最佳实践</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/12/2013-summary/">2013年年终总结</a>
       </li>
     
@@ -898,10 +823,6 @@ Symbol 对象一旦定义将一直存在，你不能对symbol赋值，
     
       <li class="post">
         <a href="/blog/2013/11/06/whenever/">在rails中创建定时任务</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/03/centos-offline-install-ruby-environment/">CentOS 5.6 离线安装Ruby环境及配置项目</a>
       </li>
     
   </ul>
