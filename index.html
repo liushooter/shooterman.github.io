@@ -191,11 +191,7 @@ Low performance 性能不好 &hellip;">
 <p>GOOD:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%</span> <span class="k">if</span> <span class="n">editable?</span><span class="p">(</span><span class="n">post</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
-</span><span class='line'><span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">link_to</span><span class="p">(</span><span class="s2">&quot;Edit&quot;</span><span class="p">,</span> <span class="n">edit_post_path</span><span class="p">(</span><span class="n">post</span><span class="p">))</span><span class="cp">%&gt;</span><span class="x"></span>
-</span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="cp">&lt;%=</span> <span class="n">render_post_content</span><span class="p">(</span><span class="vi">@topic</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -253,12 +249,12 @@ Low performance 性能不好 &hellip;">
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">render_post_title</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">str</span> <span class="o">=</span> <span class="err">“”</span>
-</span><span class='line'>  <span class="n">str</span> <span class="o">+=</span> <span class="err">“</span><span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="err">”</span>
+</span><span class='line'>  <span class="n">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span class='line'>  <span class="n">str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;li&gt;&quot;</span>
 </span><span class='line'>  <span class="n">str</span> <span class="o">+=</span> <span class="n">link_to</span><span class="p">(</span><span class="n">post</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">post_path</span><span class="p">(</span><span class="n">post</span><span class="p">))</span>
-</span><span class='line'>  <span class="n">str</span> <span class="o">+=</span> <span class="err">“</span><span class="o">&lt;</span><span class="sr">/li&gt;”</span>
-</span><span class='line'><span class="sr">  return raw(str)</span>
-</span><span class='line'><span class="sr">end</span>
+</span><span class='line'>  <span class="n">str</span> <span class="o">+=</span> <span class="s2">&quot;&lt;/li&gt;&quot;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">raw</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -492,7 +488,7 @@ Low performance 性能不好 &hellip;">
 </span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="n">cache</span> <span class="o">[</span><span class="n">v45</span><span class="p">,</span><span class="vi">@todolist</span><span class="o">]</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
 </span><span class='line'><span class="x">      zzz</span>
 </span><span class='line'><span class="x">    </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
-</span><span class='line'><span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x">    </span>
+</span><span class='line'><span class="x">  </span><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
 </span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="o">%</span> <span class="cp">%&gt;</span><span class="x"></span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -670,7 +666,7 @@ Low performance 性能不好 &hellip;">
 </span><span class='line'><span class="x">&lt;!-- main.html.erb --&gt;</span>
 </span><span class='line'><span class="cp">&lt;%=</span> <span class="n">content_for</span> <span class="ss">:page_specific_javascript</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
 </span><span class='line'><span class="x">  &lt;script type= &quot;text/javascript&quot;&gt;</span>
-</span><span class='line'><span class="x">    your script here</span>
+</span><span class='line'><span class="x">    // your script here</span>
 </span><span class='line'><span class="x">  &lt;/script&gt;</span>
 </span><span class='line'><span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
 </span></code></pre></td></tr></table></div></figure>

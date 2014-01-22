@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Rails | Shooter's Blog]]></title>
   <link href="http://shooterman.github.io/blog/categories/rails/atom.xml" rel="self"/>
   <link href="http://shooterman.github.io/"/>
-  <updated>2014-01-15T22:48:32+08:00</updated>
+  <updated>2014-01-22T14:44:12+08:00</updated>
   <id>http://shooterman.github.io/</id>
   <author>
     <name><![CDATA[shooter]]></name>
@@ -87,9 +87,7 @@
 <p>GOOD:</p>
 
 <p><code>erb
-&lt;% if editable?(post) %&gt;
-  &lt;%= link_to("Edit", edit_post_path(post))%&gt;
-&lt;% end %&gt;
+&lt;%= render_post_content(@topic.content) %&gt;
 </code></p>
 
 <p>Common Case</p>
@@ -134,10 +132,10 @@ end
 
 <p><code>ruby
 def render_post_title(post)
-  str = “”
-  str += “&lt;li&gt;”
+  str = ""
+  str += "&lt;li&gt;"
   str += link_to(post.title, post_path(post))
-  str += “&lt;/li&gt;”
+  str += "&lt;/li&gt;"
   return raw(str)
 end
 </code></p>
@@ -319,7 +317,7 @@ end
 &lt;% end %&gt;
 </code></pre>
 
-<p>  &lt;% end %>  <br/>
+<p>  &lt;% end %>
 &lt;% end % %>
 ```</p>
 
@@ -455,7 +453,7 @@ end
 <p>&lt;%= content_for :page_specific_javascript do %>
   <script type= "text/javascript"></p>
 
-<pre><code>your script here
+<pre><code>// your script here
 </code></pre>
 
 <p>  </script>
