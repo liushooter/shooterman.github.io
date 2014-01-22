@@ -51,10 +51,9 @@ GOOD:
 <% end %>
 ```
 
+### No.2 Pre-decorate with Helper
 
-### No.2 Pre-decorate with Helper 
-
-经常用的地方先用 helper 整理 
+经常用的地方先用 helper 整理
 
 BAD:
 
@@ -69,9 +68,7 @@ BAD:
 GOOD:
 
 ```erb
-<% if editable?(post) %>
-  <%= link_to("Edit", edit_post_path(post))%>
-<% end %>
+<%= render_post_content(@topic.content) %>
 ```
 
 Common Case
@@ -105,16 +102,16 @@ end
 
 ### No.4 mix Helper & Partial
 
-在 Helper 中可以混合使用 Partial 
+在 Helper 中可以混合使用 Partial
 
 BAD:
 
 ```ruby
 def render_post_title(post)
-  str = “”
-  str += “<li>”
+  str = ""
+  str += "<li>"
   str += link_to(post.title, post_path(post))
-  str += “</li>”
+  str += "</li>"
   return raw(str)
 end
 ```
@@ -270,7 +267,7 @@ BAD:
     <% cache [v45,@todolist] do %>
       zzz
     <% end %>
-  <% end %>    
+  <% end %>
 <% end % %>
 ```
 
@@ -342,15 +339,15 @@ class UserCell < Cell::Rails
   cache :recent_posts, :expires_in => 1.hours
   cache :favorite_posts, :expires_in => 3.hours
   cache :recent_comments, :expires_in => 5.hours
-  
+
   def recent_posts(args)
    #...
   end
-  
+
   def favorite_posts(args)
     #...
   end
-  
+
   def recent_comments(args)
     #...
   end
@@ -378,7 +375,7 @@ end
 <!-- main.html.erb -->
 <%= content_for :page_specific_javascript do %>
   <script type= "text/javascript">
-    your script here
+    // your script here
   </script>
 <% end %>
 ```
@@ -488,10 +485,10 @@ end
 class Article < ActiveRecord::Base
   def human_publish_status
   end
-  
+
   def human_publish_time
   end
-  
+
   def human_author_name
   end
   #........
@@ -522,7 +519,7 @@ class ArticleDecorator < Draper::Decorator
       "Unpublished"
     end
   end
-  
+
   def published_at
     object.published_at.strftime("%A, %B %e")
   end
@@ -582,7 +579,7 @@ class EventDetailView
     participants.map(&:name).join(", ")
   end
   private
-  
+
   def participants
     @event.participants.reject { |p| p == @current_user }
   end
